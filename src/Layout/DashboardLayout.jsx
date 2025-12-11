@@ -1,6 +1,7 @@
 import React from 'react';
+import { Outlet } from 'react-router';
 
-const DashboardHome = () => {
+const DashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
   <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -14,7 +15,7 @@ const DashboardHome = () => {
       <div className="px-4">Navbar Title</div>
     </nav>
     {/* Page content here */}
-    <div className="p-4">Page Content</div>
+    <Outlet></Outlet>
   </div>
 
   <div className="drawer-side is-drawer-close:overflow-visible">
@@ -46,4 +47,4 @@ const DashboardHome = () => {
   );
 };
 
-export default DashboardHome;
+export default DashboardLayout;
