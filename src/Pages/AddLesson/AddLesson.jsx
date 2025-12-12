@@ -1,37 +1,186 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import useAuth from '../../Hooks/useAuth';
 
-const AddLesson = () => {
+const AddLesson = ({ isPremiumUser = false }) => {
+  const {user} = useAuth()
   const {register,handleSubmit, formState: {errors}} = useForm()
 
 
-  const handleSubmitData = (data) =>{
-    console.log(data);
-     fetch("http://localhost:5000/lessons", {
+  const handleSubmitData = async(data) =>{
+    const image = data.photo?.[0];
+    console.log(image);
+    const formData = new FormData();
+  formData.append("image", image);
+
+  console.log(formData);
+    
+    const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
+    console.log(image_API_URL);
+    try {
+      const res = await fetch(image_API_URL, {
+        method: "POST",
+        body: formData,
+      });
+      const imgData = await res.json()
+      if (!imgData.success) {
+      return alert("Image upload failed!");
+    }
+
+    const imageUrl = imgData.data.display_url; // PNG link
+    console.log("Uploaded Image URL:", imageUrl);
+    
+    const lessonData = {
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      emotionalTone: data.emotionalTone,
+      privacy: data.privacy,
+      accessLevel: data.accessLevel,
+      email: user?.email,
+      image: imageUrl, // Add uploaded PNG URL
+    };
+
+      fetch("http://localhost:3000/lessons", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(lessonData),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((lessonData) => console.log(lessonData));
+
+    } catch (error) {
+      console.log(error,'image not found');
+    }
+    
+    
+   
   }
   return (
-    <div>
-      <form onSubmit={handleSubmit(handleSubmitData)} className="card p-6 bg-base-100 shadow-xl max-w-lg mx-auto text-black">
-      <h2 className="text-2xl font-bold mb-4">Add Life Lesson</h2>
+    <div className="max-w-4xl mx-auto p-6 text-gray-800">
+      <div className="bg-base-100 shadow-xl rounded-2xl border border-base-300 p-8">
+        {/* Header */}
+        <div className="mb-6">
+          <h2 className="text-3xl font-bold text-center">Create Life Lesson</h2>
+          <p className="text-base-content/70 mt-1 text-center">
+            Share your experience, story, or insight with others.
+          </p>
+        </div>
 
-      <input {...register('name')} type="text" placeholder="Title" className="input input-bordered mb-4 w-full" required />
+        {/* FORM */}
+        <form onSubmit={handleSubmit(handleSubmitData)} className="space-y-6">
 
-      <textarea {...register('description')} placeholder="Description" className="textarea textarea-bordered mb-4 w-full" required />
+          {/* Lesson Title */}
+          <div>
+            <label className="label font-medium">Lesson Title</label>
+            <input
+            {...register('title', {required:true})}
+              type="text"
+              placeholder="Enter your lesson title"
+              className="input input-bordered w-full rounded-xl focus:outline-none"
+            />
+          </div>
 
-      <input {...register('category')}  type="text" placeholder="Category" className="input input-bordered mb-4 w-full" required />
+          {/* Description */}
+          <div>
+            <label className=" font-medium">
+              Full Description / Story / Insight
+            </label>
+            <textarea
+            {...register('description', {required:true})}
+              className="textarea textarea-bordered w-full h-40 rounded-xl "
+              placeholder="Write your full lesson, story or insight..."
+            ></textarea>
+          </div>
 
-      <input {...register('emotionalTone')}  type="text" placeholder="Emotional Tone" className="input input-bordered mb-4 w-full" required />
+          {/* Grid Inputs */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      <input {...register('image')}  type="text" placeholder="Image URL (optional)" className="input input-bordered mb-4 w-full" />
+            {/* Category */}
+            <div>
+              <label className="label font-medium">Category</label>
+              <select className="select select-bordered w-full rounded-xl" {...register('category', {required:true})}>
+                <option>Personal Growth</option>
+                <option>Career</option>
+                <option>Relationships</option>
+                <option>Mindset</option>
+                <option>Mistakes Learned</option>
+              </select>
+            </div>
 
-      <button className="btn btn-primary w-full">Add Lesson</button>
-    </form>
+            {/* Emotional Tone */}
+            <div>
+              <label className="label font-medium">Emotional Tone</label>
+              <select className="select select-bordered w-full rounded-xl" {...register('emotionalTone', {required:true})}>
+                <option>Motivational</option>
+                <option>Sad</option>
+                <option>Realization</option>
+                <option>Gratitude</option>
+              </select>
+            </div>
+
+            {/* Privacy */}
+            <div>
+              <label className="label font-medium">Privacy</label>
+              <select {...register('privacy', {required:true})} className="select select-bordered w-full rounded-xl">
+                <option>Public</option>
+                <option>Private</option>
+              </select>
+            </div>
+
+            {/* Access Level */}
+            <div>
+              <label className="label font-medium flex items-center gap-2">
+                Access Level
+              </label>
+
+              <div className="relative">
+                <select {...register('accessLevel')}
+                  className="select select-bordered w-full rounded-xl"
+                  disabled={!isPremiumUser}
+                  data-tip={
+                    !isPremiumUser
+                      ? "Upgrade to Premium to create paid lessons"
+                      : ""
+                  }
+                >
+                  <option>Free</option>
+                  <option>Premium</option>
+                </select>
+
+                {!isPremiumUser && (
+                  <div
+                    className="tooltip tooltip-open absolute left-0 top-0"
+                    // data-tip="Upgrade to Premium to create paid lessons"
+                  ></div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label className="label font-medium">Upload Image (Optional)</label>
+            <div className="p-6 bg-base-200 rounded-xl border border-base-300 flex items-center gap-4">
+              <input 
+                type="file"
+                accept="image/*"
+              {...register('photo')}
+                className="file-input file-input-bordered w-full rounded-xl"
+                
+              />
+            </div>
+          </div>
+
+          {/* Submit */}
+          <div className="pt-4">
+            <button type="submit" className="btn btn-primary w-full rounded-xl text-lg">
+              Create Lesson
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
   );
 };

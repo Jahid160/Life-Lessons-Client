@@ -11,6 +11,7 @@ import AddLesson from "../Pages/AddLesson/AddLesson";
 import Pricing from "../Pages/Pricing/Pricing";
 import PrivateRoute from "./PrivateRoute";
 import Error404Page from "../Component/ErrorPage/Error404Page";
+import MyLessons from "../Pages/Dashboard/DashboardHome/MyLessons/MyLessons";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddLesson></AddLesson>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "my-lesson",
+        element: (
+          <PrivateRoute>
+            <MyLessons/>
           </PrivateRoute>
         ),
       },

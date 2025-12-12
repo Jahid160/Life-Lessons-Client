@@ -16,7 +16,7 @@ const Register = () => {
     const axiosSecure = useAxiosSecure();
 
     const handleRegistration = (data) =>{
-      const profileImg = data.photo[0];
+      const profileImg = data.photo[0]
       registerUser(data.email, data.password)
       .then(()=>{
         const formData = new FormData();
@@ -24,7 +24,7 @@ const Register = () => {
       formData.append('image', profileImg);
 
       const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
-
+      
       axios.post(image_API_URL,formData)
       .then(res=>{
         const photoURL = res.data.data.url;
