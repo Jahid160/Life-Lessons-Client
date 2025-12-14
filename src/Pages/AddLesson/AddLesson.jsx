@@ -33,6 +33,7 @@ const AddLesson = ({ isPremiumUser = false }) => {
     const lessonData = {
       title: data.title,
       description: data.description,
+      createAt: new Date(),
       category: data.category,
       emotionalTone: data.emotionalTone,
       privacy: data.privacy,

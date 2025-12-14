@@ -45,7 +45,7 @@ const DashboardLayout = () => {
         </li>
         {/* My Lesson  item */}
         <li>
-          <Link to={'my-lesson'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
+          <Link to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
             {/* Lesson icon */}
             <FaBookReader />
             

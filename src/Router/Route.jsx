@@ -12,6 +12,7 @@ import Pricing from "../Pages/Pricing/Pricing";
 import PrivateRoute from "./PrivateRoute";
 import Error404Page from "../Component/ErrorPage/Error404Page";
 import MyLessons from "../Pages/Dashboard/DashboardHome/MyLessons/MyLessons";
+import UpdateLesson from "../Pages/UpdateLesson/UpdateLesson";
 
 const router = createBrowserRouter([
   {
@@ -73,12 +74,16 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "my-lesson",
+        path: "my-lessons",
         element: (
           <PrivateRoute>
-            <MyLessons/>
+            <MyLessons />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "my-lessons/update-lesson/:id",
+        element: <UpdateLesson></UpdateLesson>,
       },
     ],
   },

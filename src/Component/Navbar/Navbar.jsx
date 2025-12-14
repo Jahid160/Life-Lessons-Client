@@ -14,7 +14,7 @@ const Navbar = () => {
         <Link to={'dashboard/add-lesson'}>Add Lesson</Link>
       </li>
       <li>
-        <Link>My Lessons</Link>
+        <Link to={'dashboard/my-lessons'}>My Lessons</Link>
       </li>
       <li>
         <Link to={'pricing'}>pricing</Link>
