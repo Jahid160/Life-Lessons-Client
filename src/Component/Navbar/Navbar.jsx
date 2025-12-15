@@ -17,6 +17,9 @@ const Navbar = () => {
         <Link to={'dashboard/my-lessons'}>My Lessons</Link>
       </li>
       <li>
+        <Link to={'/life-lessons'}>Public Lessons</Link>
+      </li>
+      <li>
         <Link to={'pricing'}>pricing</Link>
       </li>
       <li>

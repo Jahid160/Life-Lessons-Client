@@ -1,19 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import useAuth from '../../../../Hooks/useAuth';
+import { useNavigate, useParams,Link } from 'react-router';
+import { FaBookmark, FaEye, FaFlag, FaHeart, FaRegBookmark, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 
-import {
-  FaHeart,
-  FaRegHeart,
-  FaBookmark,
-  FaRegBookmark,
-  FaFlag,
-  FaShareAlt,
-  FaEye,
-} from "react-icons/fa";
-
-import { useNavigate, useParams, Link } from "react-router";
-import useAuth from "../../../Hooks/useAuth";
-
-const LessonDetails = () => {
+const LessonCardDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -25,7 +15,7 @@ const LessonDetails = () => {
 
   // 🔹 Fetch lesson
   useEffect(() => {
-    fetch(`http://localhost:5000/lessons/${id}`)
+    fetch(`http://localhost:3000/lessons/${id}`)
       .then(res => res.json())
       .then(data => setLesson(data));
   }, [id]);
@@ -55,9 +45,8 @@ const LessonDetails = () => {
   const handleReport = () => {
     document.getElementById("report_modal").showModal();
   };
-
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
+    <div className="max-w-5xl mx-auto px-4 py-10 text-black">
       {/* 🔒 Premium Lock */}
       {isPremiumLocked && (
         <div className="mb-6 p-6 rounded-lg bg-warning/10 text-center">
@@ -106,9 +95,9 @@ const LessonDetails = () => {
         </div>
 
         {/* 🔹 Author Section */}
-        <div className="flex items-center gap-4 p-4 bg-base-200 rounded-lg mb-8">
+        <div className="flex items-center gap-4 p-4 bg-base-200 rounded-lg mb-8 ">
           <img
-            src={lesson.creatorPhoto}
+            src={lesson.image}
             className="w-16 h-16 rounded-full object-cover"
             alt=""
           />
@@ -118,7 +107,7 @@ const LessonDetails = () => {
               {lesson.totalLessons} lessons published
             </p>
             <Link
-              to={`/profile/${lesson.creatorEmail}`}
+              to={`/profile/${lesson?.email}`}
               className="btn btn-link px-0"
             >
               View all lessons →
@@ -213,4 +202,4 @@ const LessonDetails = () => {
   );
 };
 
-export default LessonDetails;
+export default LessonCardDetails;

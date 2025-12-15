@@ -28,11 +28,11 @@ const DashboardLayout = () => {
       <ul className="menu w-full grow">
         {/* List item */}
         <li>
-          <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
+          <Link to={'/'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
             {/* Home icon */}
             <TiHomeOutline />
-            <span className="is-drawer-close:hidden"><Link to={'/'}>Homepage</Link></span>
-          </button>
+            <span className="is-drawer-close:hidden">Homepage</span>
+          </Link>
         </li>
         {/* Add Lesson  item */}
         <li>

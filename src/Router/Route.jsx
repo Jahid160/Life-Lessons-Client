@@ -6,14 +6,16 @@ import Register from "../Pages/Auth/Register/Register";
 import AuthLayout from "../Layout/AuthLayout";
 import MainLayout from "../Layout/MainLayout";
 import DashboardLayout from "../Layout/DashboardLayout";
-import Home from "../Pages/Home/Home/Home";
+import Home from "../Pages/Home/Home/Home"
 import AddLesson from "../Pages/AddLesson/AddLesson";
 import Pricing from "../Pages/Pricing/Pricing";
 import PrivateRoute from "./PrivateRoute";
 import Error404Page from "../Component/ErrorPage/Error404Page";
 import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
 import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
-import LessonCard from "../Pages/PublicLessons/LessonCard";
+import LessonCard from "../Pages/Home/LifeLessons/PublicLessons/LessonCard";
+import LessonDetails from "../Pages/Dashboard/LessonDetails/LessonDetails";
+import LessonCardDetails from "../Pages/Home/LifeLessons/PublicLessons/LessonCardDetails";
 
 const router = createBrowserRouter([
   {
@@ -22,11 +24,17 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Home></Home>,
       },
       {
-        path: '/public-lessons',
+        path: '/life-lessons',
         element:<LessonCard></LessonCard>
+      },
+      {
+        path: '/life-lessons/details/:id',
+        element: <PrivateRoute>
+          <LessonCardDetails></LessonCardDetails>
+        </PrivateRoute>
       },
       {
         path: "pricing",
@@ -78,6 +86,12 @@ const router = createBrowserRouter([
         path: "my-lessons",
         element: <MyLessons />,
       },
+      // {
+      //   path: 'lesson-details/:id',
+      //   element: <PrivateRoute>
+      //     <LessonDetails></LessonDetails>
+      //   </PrivateRoute>
+      // },
       {
         path: "my-lessons/update-lesson/:id",
         element: <UpdateLesson></UpdateLesson>,

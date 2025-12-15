@@ -1,7 +1,8 @@
 import { FaUserCircle, FaRegSmile, FaTag, FaLock, FaUnlock, FaArrowRight } from "react-icons/fa";
-import Loading from "../../Component/Loading/Loading";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Loading from "../../../../Component/Loading/Loading";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
 
 const LessonCard = () => {
 
@@ -27,7 +28,7 @@ const {
 
 
 
-
+console.log(lessons);
 
 
 const currentUser = {
@@ -128,13 +129,13 @@ const currentUser = {
                   </div>
                 </div>
 
-                <button
+                <Link to={`details/${lesson._id}`}
                   disabled={isLocked}
                   className="btn btn-sm btn-outline btn-primary rounded-full gap-2 disabled:opacity-40"
                 >
                   See Details
                   <FaArrowRight />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

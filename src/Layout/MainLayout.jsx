@@ -15,7 +15,7 @@ const MainLayout = () => {
       
 
       {/* Content area grows */}
-      <main className="flex-grow max-w-7xl mx-auto w-full">
+      <main className=" max-w-7xl mx-auto w-full">
         <Outlet />
       </main>
 

@@ -22,7 +22,7 @@ const MyLessons = () => {
   } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/lessons`);
+      const res = await axiosSecure.get(`/lessons/user/${user.email}`);
       return res.data;
     },
   });
@@ -145,12 +145,12 @@ const MyLessons = () => {
                   {/* Actions */}
                   <td>
                     <div className="flex justify-center gap-2">
-                      <button
+                      <Link to={`lesson-details/${lesson._id}`}
                         className="btn btn-sm btn-ghost tooltip"
                         data-tip="Details"
                       >
                         <FaEye />
-                      </button>
+                      </Link>
 
                       <Link
                         to={`update-lesson/${lesson._id}`}
