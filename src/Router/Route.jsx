@@ -11,8 +11,9 @@ import AddLesson from "../Pages/AddLesson/AddLesson";
 import Pricing from "../Pages/Pricing/Pricing";
 import PrivateRoute from "./PrivateRoute";
 import Error404Page from "../Component/ErrorPage/Error404Page";
-import MyLessons from "../Pages/Dashboard/DashboardHome/MyLessons/MyLessons";
-import UpdateLesson from "../Pages/UpdateLesson/UpdateLesson";
+import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
+import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
+import LessonCard from "../Pages/PublicLessons/LessonCard";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/public-lessons',
+        element:<LessonCard></LessonCard>
       },
       {
         path: "pricing",
@@ -67,23 +72,20 @@ const router = createBrowserRouter([
       // },
       {
         path: "add-lesson",
-        element: (
-          <PrivateRoute>
-            <AddLesson></AddLesson>
-          </PrivateRoute>
-        ),
+        element: <AddLesson></AddLesson>,
       },
       {
         path: "my-lessons",
-        element: (
-          <PrivateRoute>
-            <MyLessons />
-          </PrivateRoute>
-        ),
+        element: <MyLessons />,
       },
       {
         path: "my-lessons/update-lesson/:id",
         element: <UpdateLesson></UpdateLesson>,
+      },
+
+      // admin only routes
+      {
+        path: "users-management",
       },
     ],
   },

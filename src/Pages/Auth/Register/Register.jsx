@@ -5,6 +5,7 @@ import { FaGoogle, FaEnvelope, FaLock } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
+import SocialLogin from "../SocialLogin/SocialLogin";
 // import '../../.././index.css'
 
 const Register = () => {
@@ -114,11 +115,7 @@ const Register = () => {
           <div className="divider text-white/50 my-8">OR</div>
 
           {/* Social */}
-          <div className="flex gap-4">
-            <button className="w-full py-3 rounded-full bg-white text-black font-medium flex items-center justify-center gap-2 hover:scale-105 transition">
-              <FaGoogle /> Google
-            </button>
-          </div>
+          <SocialLogin></SocialLogin>
 
           {/* Footer */}
           <p className="text-center text-gray-300 mt-8">

@@ -31,7 +31,7 @@ const DashboardLayout = () => {
           <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
             {/* Home icon */}
             <TiHomeOutline />
-            <span className="is-drawer-close:hidden">Homepage</span>
+            <span className="is-drawer-close:hidden"><Link to={'/'}>Homepage</Link></span>
           </button>
         </li>
         {/* Add Lesson  item */}

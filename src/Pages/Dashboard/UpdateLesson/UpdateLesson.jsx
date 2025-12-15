@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router";
-import useAxios from "../../Hooks/useAxios";
-import useAuth from "../../Hooks/useAuth";
+
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useAuth from "../../../Hooks/useAuth";
 
 const UpdateLesson = () => {
   const { id } = useParams();
-  const axiosInstance = useAxios();
+  const axiosInstance = useAxiosSecure();
   const { data: lesson = [], isLoading } = useQuery({
     queryKey: ["lesson", id],
     queryFn: async () => {

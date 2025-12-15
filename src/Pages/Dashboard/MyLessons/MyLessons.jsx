@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaEdit, FaTrash, FaHeart, FaBookmark } from "react-icons/fa";
-import useAxios from "../../../../Hooks/useAxios";
-import useAuth from "../../../../Hooks/useAuth";
+
+import useAuth from "../../../Hooks/useAuth";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Loading from "../../../Component/Loading/Loading";
 
 const MyLessons = () => {
   const isPremiumUser = true;
   const { user } = useAuth();
-  const axiosInstance = useAxios();
+ 
   const axiosSecure = useAxiosSecure();
 
   const {
@@ -27,7 +28,7 @@ const MyLessons = () => {
   });
   console.log(lessons);
 
-  if (isLoading) return <span className="loading loading-spinner"></span>;
+  if (isLoading) return <Loading></Loading>;
   if (error) return <p className="text-error">Failed to load lessons</p>;
 
   const handleDelete = (id) => {
