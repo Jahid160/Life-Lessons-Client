@@ -48,6 +48,7 @@ const currentUser = {
           creatorPhoto,
           accessLevel,
           createdAt,
+          image
         } = lesson;
 
         const isLocked =
@@ -115,7 +116,7 @@ const currentUser = {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <img
-                    src={creatorPhoto || "https://i.ibb.co/2kRZ1dB/user.png"}
+                    src={image || "https://i.ibb.co/2kRZ1dB/user.png"}
                     alt={creatorName}
                     className="w-10 h-10 rounded-full object-cover"
                   />

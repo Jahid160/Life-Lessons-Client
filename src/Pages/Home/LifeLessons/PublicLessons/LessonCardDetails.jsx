@@ -1,7 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import useAuth from '../../../../Hooks/useAuth';
-import { useNavigate, useParams,Link } from 'react-router';
-import { FaBookmark, FaEye, FaFlag, FaHeart, FaRegBookmark, FaRegHeart, FaShareAlt } from 'react-icons/fa';
+import React, { useEffect, useRef, useState } from "react";
+import useAuth from "../../../../Hooks/useAuth";
+import { useNavigate, useParams, Link } from "react-router";
+import './LessonDetails.css'
+import {
+  FaBookmark,
+  FaEye,
+  FaFlag,
+  FaHeart,
+  FaRegBookmark,
+  FaRegHeart,
+  FaShareAlt,
+} from "react-icons/fa";
+import { FacebookIcon, FacebookMessengerIcon, FacebookMessengerShareButton, FacebookShareButton, FacebookShareCount, TwitterShareButton, XIcon } from "react-share";
 
 const LessonCardDetails = () => {
   const { id } = useParams();
@@ -13,11 +23,14 @@ const LessonCardDetails = () => {
   const [saved, setSaved] = useState(false);
   const [views] = useState(Math.floor(Math.random() * 10000));
 
+  const reportRef = useRef(null)
+  const shareRef = useRef(null)
+
   // 🔹 Fetch lesson
   useEffect(() => {
     fetch(`http://localhost:3000/lessons/${id}`)
-      .then(res => res.json())
-      .then(data => setLesson(data));
+      .then((res) => res.json())
+      .then((data) => setLesson(data));
   }, [id]);
 
   if (!lesson) return <p className="text-center mt-10">Loading...</p>;
@@ -41,18 +54,21 @@ const LessonCardDetails = () => {
     setSaved(!saved);
   };
 
+  
   // 🔹 Report handler
   const handleReport = () => {
-    document.getElementById("report_modal").showModal();
+reportRef.current?.showModal();
   };
+
+  const handleShare = ()=>{
+  shareRef.current?.showModal()
+  }
   return (
     <div className="max-w-5xl mx-auto px-4 py-10 text-black">
       {/* 🔒 Premium Lock */}
       {isPremiumLocked && (
         <div className="mb-6 p-6 rounded-lg bg-warning/10 text-center">
-          <h2 className="text-xl font-semibold mb-2">
-            Premium Lesson 🔒
-          </h2>
+          <h2 className="text-xl font-semibold mb-2">Premium Lesson 🔒</h2>
           <p className="mb-4 text-gray-600">
             Upgrade to premium to unlock full content
           </p>
@@ -66,7 +82,9 @@ const LessonCardDetails = () => {
       )}
 
       {/* 🔹 Lesson Information */}
-      <div className={`${isPremiumLocked ? "blur-md pointer-events-none" : ""}`}>
+      <div
+        className={`${isPremiumLocked ? "blur-md pointer-events-none" : ""}`}
+      >
         <h1 className="text-3xl font-bold mb-4">{lesson.title}</h1>
 
         {lesson.image && (
@@ -77,7 +95,7 @@ const LessonCardDetails = () => {
           />
         )}
 
-        <p className="text-gray-700 leading-relaxed mb-6">
+        <p className="text-gray-700 leading-relaxed mb-6 wrap-break-word whitespace-normal">
           {lesson.description}
         </p>
 
@@ -89,8 +107,8 @@ const LessonCardDetails = () => {
         {/* 🔹 Metadata */}
         <div className="bg-base-200 rounded-lg p-4 mb-8 text-sm">
           <p>📅 Created: {lesson.createdAt}</p>
-          <p>🔄 Updated: {lesson.updatedAt || "N/A"}</p>
-          <p>🌍 Visibility: Public</p>
+          <p>🔄 Updated: {lesson?.updatedAt || "N/A"}</p>
+          <p>🌍 Visibility: {lesson.privacy}</p>
           <p>⏱ Reading Time: {lesson.readTime || "3 min"}</p>
         </div>
 
@@ -142,7 +160,7 @@ const LessonCardDetails = () => {
             <FaFlag /> Report
           </button>
 
-          <button className="btn btn-outline">
+          <button onClick={handleShare} className="btn btn-outline">
             <FaShareAlt /> Share
           </button>
         </div>
@@ -156,17 +174,13 @@ const LessonCardDetails = () => {
               placeholder="Write a comment..."
             ></textarea>
           ) : (
-            <p className="text-sm text-gray-500">
-              Please login to comment
-            </p>
+            <p className="text-sm text-gray-500">Please login to comment</p>
           )}
         </div>
 
         {/* 🔹 Similar Lessons */}
         <div>
-          <h3 className="text-xl font-semibold mb-4">
-            Similar Lessons
-          </h3>
+          <h3 className="text-xl font-semibold mb-4">Similar Lessons</h3>
           <div className="grid md:grid-cols-3 gap-4">
             {/* map similar lessons here */}
           </div>
@@ -174,7 +188,7 @@ const LessonCardDetails = () => {
       </div>
 
       {/* 🔴 Report Modal */}
-      <dialog id="report_modal" className="modal">
+      <dialog ref={reportRef}    className="modal">
         <div className="modal-box">
           <h3 className="font-bold mb-4">Report Lesson</h3>
           <select className="select select-bordered w-full mb-4">
@@ -189,14 +203,57 @@ const LessonCardDetails = () => {
             <button className="btn btn-error">Submit</button>
             <button
               className="btn"
-              onClick={() =>
-                document.getElementById("report_modal").close()
-              }
+              onClick={() => reportRef.current?.close()}
             >
               Cancel
             </button>
           </div>
         </div>
+      </dialog>
+
+      {/* share modal */}
+      <dialog ref={shareRef} className="modal ">
+        <div className="modal-box ">
+
+<div className=".Demo__container flex justify-center items-center gap-4">
+  <div className="Demo__some-network">
+        <FacebookShareButton
+          url={'www.facebook.com'}
+          className="Demo__some-network__share-button"
+        >
+          <FacebookIcon size={32} round />
+        </FacebookShareButton>
+        </div>
+        <div className="Demo__some-network">
+        <FacebookMessengerShareButton
+          
+          appId="521270401588372"
+          className="Demo__some-network__share-button"
+        >
+          <FacebookMessengerIcon size={32} round />
+        </FacebookMessengerShareButton>
+      </div>
+
+      <div className="Demo__some-network">
+        <TwitterShareButton
+          url={'www.x.com'}
+          
+          className="Demo__some-network__share-button"
+        >
+          <XIcon size={32} round />
+        </TwitterShareButton>
+      </div>
+</div>
+<div className="modal-action">
+            <button
+              className="btn"
+              onClick={() => shareRef.current?.close()}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+
       </dialog>
     </div>
   );
