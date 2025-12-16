@@ -5,6 +5,7 @@ import useAuth from "../../Hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  console.log(user?.photoURL);
   const links = (
     <>
       <li>
@@ -87,7 +88,7 @@ const Navbar = () => {
                 <Link>{user?.displayName}</Link>
               </li>
               <li className="my-4">
-                <Link to="/profile">Profile</Link>
+                <Link to={`profile/user/${user?.email}`}>Profile</Link>
               </li>
               <li>
                 <Link to="/dashboard">Dashboard</Link>

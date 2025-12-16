@@ -16,6 +16,8 @@ import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
 import LessonCard from "../Pages/Home/LifeLessons/PublicLessons/LessonCard";
 import LessonDetails from "../Pages/Dashboard/LessonDetails/LessonDetails";
 import LessonCardDetails from "../Pages/Home/LifeLessons/PublicLessons/LessonCardDetails";
+import ProfilePage from "../Pages/ProfilePage/ProfilePage";
+import MyProfile from "../Pages/MyProfile/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,12 @@ const router = createBrowserRouter([
         path: '/life-lessons/details/:id',
         element: <PrivateRoute>
           <LessonCardDetails></LessonCardDetails>
+        </PrivateRoute>
+      },
+      {
+        path: 'profile/user/:email',
+        element: <PrivateRoute>
+          <ProfilePage></ProfilePage>
         </PrivateRoute>
       },
       {
@@ -85,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: "my-lessons",
         element: <MyLessons />,
+      },
+      {
+        path: 'my-profile',
+        element: <MyProfile></MyProfile>
       },
       // {
       //   path: 'lesson-details/:id',

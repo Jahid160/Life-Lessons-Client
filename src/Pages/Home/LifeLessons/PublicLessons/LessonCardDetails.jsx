@@ -125,10 +125,10 @@ reportRef.current?.showModal();
               {lesson.totalLessons} lessons published
             </p>
             <Link
-              to={`/profile/${lesson?.email}`}
+              to={`/profile/user/${lesson?.email}`}
               className="btn btn-link px-0"
             >
-              View all lessons →
+              View lessons by author →
             </Link>
           </div>
         </div>
