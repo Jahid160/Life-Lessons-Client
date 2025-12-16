@@ -25,7 +25,7 @@ const LessonDetails = () => {
 
   // 🔹 Fetch lesson
   useEffect(() => {
-    fetch(`http://localhost:5000/lessons/${id}`)
+    fetch(`http://localhost:3000/lessons/${id}`)
       .then(res => res.json())
       .then(data => setLesson(data));
   }, [id]);

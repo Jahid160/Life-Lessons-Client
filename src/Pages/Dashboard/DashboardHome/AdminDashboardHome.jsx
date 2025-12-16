@@ -2,7 +2,7 @@ import React from 'react';
 
 const AdminDashboardHome = () => {
   return (
-    <div>
+    <div className='text-black'>
       AdminDashboardHome
     </div>
   );

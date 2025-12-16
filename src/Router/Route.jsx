@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Login from "../Pages/Auth/Login/Login";
 
-import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+
 import Register from "../Pages/Auth/Register/Register";
 import AuthLayout from "../Layout/AuthLayout";
 import MainLayout from "../Layout/MainLayout";
@@ -18,6 +18,9 @@ import LessonDetails from "../Pages/Dashboard/LessonDetails/LessonDetails";
 import LessonCardDetails from "../Pages/Home/LifeLessons/PublicLessons/LessonCardDetails";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import MyProfile from "../Pages/MyProfile/MyProfile";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import AdminRoute from "./AdminRoute";
+import ManageUsers from "../Pages/Dashboard/ManageUsers/ManageUsers";
 
 const router = createBrowserRouter([
   {
@@ -80,12 +83,12 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      // {
-      //   index: true,
-      //   element: <PrivateRoute>
-      //     <DashboardHome></DashboardHome>
-      //   </PrivateRoute>
-      // },
+      {
+        index: true,
+        element: <PrivateRoute>
+          <DashboardHome></DashboardHome>
+        </PrivateRoute>
+      },
       {
         path: "add-lesson",
         element: <AddLesson></AddLesson>,
@@ -112,6 +115,9 @@ const router = createBrowserRouter([
       // admin only routes
       {
         path: "users-management",
+        element: <AdminRoute>
+          <ManageUsers></ManageUsers>
+        </AdminRoute>
       },
     ],
   },

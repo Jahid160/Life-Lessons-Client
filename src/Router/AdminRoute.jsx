@@ -2,10 +2,11 @@ import React from 'react';
 
 
 
-import Forbidden from '../components/Forbidden/Forbidden';
+
 import useAuth from '../Hooks/useAuth';
 import useRole from '../Hooks/useRole';
 import Loading from '../Component/Loading/Loading';
+import Error404Page from '../Component/ErrorPage/Error404Page';
 
 const AdminRoute = ({ children }) => {
     const { loading } = useAuth();
@@ -16,7 +17,7 @@ const AdminRoute = ({ children }) => {
     }
 
     if (role !== 'admin') {
-        return <Forbidden></Forbidden>
+        return <Error404Page></Error404Page>
     }
 
     return children;

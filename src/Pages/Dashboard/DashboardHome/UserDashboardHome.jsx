@@ -2,7 +2,7 @@ import React from 'react';
 
 const UserDashboardHome = () => {
   return (
-    <div>
+    <div className='text-black'>
       UserDashboardHome
     </div>
   );
