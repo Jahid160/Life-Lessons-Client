@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className='text-black'>
       <Banner></Banner>
-       
+      
       <LifeMatters></LifeMatters>
     </div>
   );

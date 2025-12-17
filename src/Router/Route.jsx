@@ -21,6 +21,7 @@ import MyProfile from "../Pages/MyProfile/MyProfile";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import AdminRoute from "./AdminRoute";
 import ManageUsers from "../Pages/Dashboard/ManageUsers/ManageUsers";
+import ManageLessons from "../Pages/Dashboard/ManageLessons/ManageLessons";
 
 const router = createBrowserRouter([
   {
@@ -114,10 +115,21 @@ const router = createBrowserRouter([
 
       // admin only routes
       {
-        path: "users-management",
+        path: "admin/manage-users",
         element: <AdminRoute>
           <ManageUsers></ManageUsers>
         </AdminRoute>
+      },
+      {
+        path: "admin/manage-lessons",
+        element: <AdminRoute>
+          <ManageLessons></ManageLessons>
+        </AdminRoute>
+      },
+      {
+        path: "my-favorites",
+        element:
+          <ManageUsers></ManageUsers>
       },
     ],
   },

@@ -8,11 +8,11 @@ import useAuth from "../../../Hooks/useAuth";
 
 const UpdateLesson = () => {
   const { id } = useParams();
-  const axiosInstance = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const { data: lesson = [], isLoading } = useQuery({
     queryKey: ["lesson", id],
     queryFn: async () => {
-      const result = await axiosInstance.get(`/lessons/${id}`);
+      const result = await axiosSecure.get(`/lessons/${id}`);
       return result.data;
     },
   });

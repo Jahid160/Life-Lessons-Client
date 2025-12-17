@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { FaUserShield } from "react-icons/fa";
 import { FiShieldOff } from "react-icons/fi";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Loading from "../../../Component/Loading/Loading";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -16,7 +17,32 @@ const ManageUsers = () => {
       const res = await axiosSecure.get(`/users?searchText=${searchText}`);
       return res.data;
     },
+    
   });
+
+   // total lessons find per user
+
+  const { data: lessonCounts = {},isLoading,error } = useQuery({
+  queryKey: ["lesson-counts"],
+  enabled: users.length > 0,
+  queryFn: async () => {
+    const responses = await Promise.all(
+      users.map(user =>
+        axiosSecure
+          .get(`/lessons/user/${user.email}`)
+          .then(res => ({ email: user.email, count: res.data.length }))
+      )
+    );
+
+    return responses.reduce((acc, cur) => {
+      acc[cur.email] = cur.count;
+      return acc;
+    }, {});
+  },
+});
+
+  if (isLoading) return <Loading></Loading>;
+  if (error) return <p className="text-error">Failed to load lessons</p>;
 
   const handleMakeAdmin = (user) => {
     const roleInfo = { role: "admin" };
@@ -90,13 +116,14 @@ const ManageUsers = () => {
               <th>User</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Lessons crated</th>
               <th>Admin Action</th>
               <th>Others Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
                   <div className="flex items-center gap-3">
@@ -112,10 +139,11 @@ const ManageUsers = () => {
                       <div className="font-bold">{user.displayName}</div>
                       <div className="text-sm opacity-50">United States</div>
                     </div>
-                  </div>
+                 </div>
                 </td>
                 <td>{user.email}</td>
-                <td>{user?.role || 'user'}</td>
+                <td>{user?.role}</td>
+                <td >{lessonCounts[user.email] ?? 0}</td>
                 <td>
                   {user.role === "admin" ? (
                     <button

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
 import { TiHomeOutline } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdAddCircle } from "react-icons/md";
+import { MdAddCircle, MdManageAccounts } from "react-icons/md";
 import { FaBookReader } from 'react-icons/fa';
+import { SiManageiq } from "react-icons/si";
+import useRole from '../Hooks/useRole';
 const DashboardLayout = () => {
+
+  const { role } = useRole();
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
   <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -36,22 +40,62 @@ const DashboardLayout = () => {
         </li>
         {/* Add Lesson  item */}
         <li>
-          <Link to={'add-lesson'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="AddLesson">
+          <NavLink to={'add-lesson'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="AddLesson">
             {/* Lesson icon */}
             <MdAddCircle />
             
             <span className="is-drawer-close:hidden">Add Lesson</span>
-          </Link>
+          </NavLink>
         </li>
-        {/* My Lesson  item */}
+        {/* My favorites Lesson  */}
         <li>
-          <Link to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
+          <NavLink to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
             {/* Lesson icon */}
             <FaBookReader />
             
             <span className="is-drawer-close:hidden">My Lesson</span>
-          </Link>
+          </NavLink>
         </li>
+        {/* My Lesson  item */}
+        <li>
+          <NavLink to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
+            {/* Lesson icon */}
+            <FaBookReader />
+            
+            <span className="is-drawer-close:hidden">My Lesson</span>
+          </NavLink>
+        </li>
+        {/* My Lesson  item */}
+        <li>
+          <NavLink to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
+            {/* Lesson icon */}
+            <FaBookReader />
+            
+            <span className="is-drawer-close:hidden">My Lesson</span>
+          </NavLink>
+        </li>
+
+{/* admin links */}
+        {
+          role == 'admin' && <>
+          <li>
+          <NavLink to={'admin/manage-users'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="ManageUsers">
+            {/* Lesson icon */}
+            <MdManageAccounts />
+            
+            <span className="is-drawer-close:hidden">Manage Users</span>
+          </NavLink>
+        </li>
+          <li>
+          <NavLink to={'admin/manage-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="ManageLessons">
+            {/* Lesson icon */}
+            <SiManageiq />
+            
+            <span className="is-drawer-close:hidden">Manage Lessons</span>
+          </NavLink>
+        </li>
+          </>
+        }
 
         {/* List item */}
         <li>
