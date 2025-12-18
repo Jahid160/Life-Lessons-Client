@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../Hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const AddLesson = ({ isPremiumUser = false }) => {
   const {user} = useAuth()
@@ -48,7 +49,20 @@ const AddLesson = ({ isPremiumUser = false }) => {
       body: JSON.stringify(lessonData),
     })
       .then((res) => res.json())
-      .then((lessonData) => console.log(lessonData));
+      .then((lessonData) => {
+              if (lessonData.insertedId) {
+                
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: `lesson successfully added`,
+                  showConfirmButton: false,
+                  timer: 2000,
+                });
+              }
+        console.log(lessonData)
+      });
+
 
     } catch (error) {
       console.log(error,'image not found');

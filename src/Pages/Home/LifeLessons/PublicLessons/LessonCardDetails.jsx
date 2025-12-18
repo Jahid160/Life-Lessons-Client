@@ -139,16 +139,7 @@ const LessonCardDetails = () => {
         timer: 2500,
       })
     }
-    else{
-        Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: `Report  ${reportReason} lesson?`,
-        showConfirmButton: false,
-        timer: 2500,
-      });
-      return
-      }
+
     console.log(result);
 
     const reportData = {

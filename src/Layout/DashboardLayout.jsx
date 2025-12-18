@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import { TiHomeOutline } from "react-icons/ti";
+import { CgProfile } from "react-icons/cg";
+import { GrUserAdmin } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdAddCircle, MdManageAccounts, MdReportGmailerrorred } from "react-icons/md";
 import { FaBookReader } from 'react-icons/fa';
@@ -100,6 +102,15 @@ const DashboardLayout = () => {
             <MdReportGmailerrorred />
             
             <span className="is-drawer-close:hidden">Reported Lessons</span>
+          </NavLink>
+        </li>
+
+          <li>
+          <NavLink to={'admin/profile'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="AdminProfile">
+            {/* Lesson icon */}
+            <GrUserAdmin />
+            
+            <span className="is-drawer-close:hidden">Admin Profile</span>
           </NavLink>
         </li>
           </>
