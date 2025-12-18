@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../../../Hooks/useAuth";
 import { useNavigate, useParams, Link } from "react-router";
-import './LessonDetails.css'
+import "./LessonDetails.css";
 import {
   FaBookmark,
   FaEye,
@@ -11,7 +11,18 @@ import {
   FaRegHeart,
   FaShareAlt,
 } from "react-icons/fa";
-import { FacebookIcon, FacebookMessengerIcon, FacebookMessengerShareButton, FacebookShareButton, FacebookShareCount, TwitterShareButton, XIcon } from "react-share";
+import {
+  FacebookIcon,
+  FacebookMessengerIcon,
+  FacebookMessengerShareButton,
+  FacebookShareButton,
+  FacebookShareCount,
+  TwitterShareButton,
+  XIcon,
+} from "react-share";
+import Swal from "sweetalert2";
+import { useMutation } from "@tanstack/react-query";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
 const LessonCardDetails = () => {
   const { id } = useParams();
@@ -21,10 +32,20 @@ const LessonCardDetails = () => {
   const [lesson, setLesson] = useState(null);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+
+  const reportMutation = useMutation({
+    mutationFn: async (reportData) => {
+      const res = await axiosSecure.post("/lessonReports", reportData);
+      return res.data;
+    },
+  });
+
+  const axiosSecure = useAxiosSecure();
   const [views] = useState(Math.floor(Math.random() * 10000));
 
-  const reportRef = useRef(null)
-  const shareRef = useRef(null)
+  const reportRef = useRef(null);
+  const shareRef = useRef(null);
 
   // 🔹 Fetch lesson
   useEffect(() => {
@@ -43,6 +64,7 @@ const LessonCardDetails = () => {
     if (!user) {
       return navigate("/login");
     }
+
     setLiked(!liked);
   };
 
@@ -54,15 +76,97 @@ const LessonCardDetails = () => {
     setSaved(!saved);
   };
 
-  
   // 🔹 Report handler
   const handleReport = () => {
-reportRef.current?.showModal();
+    shareRef.current?.close();
+    reportRef.current?.showModal();
   };
 
-  const handleShare = ()=>{
-  shareRef.current?.showModal()
-  }
+  // mutation crate
+
+  // handleSubmitReport
+  const handleSubmitReport = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (!reportReason) {
+      reportRef.current?.close();
+      Swal.fire({
+        icon: "warning",
+        title: "Select a reason",
+      });
+      return;
+    }
+
+    // ✅ CLOSE REPORT MODAL FIRST
+    reportRef.current?.close();
+
+    // ✅ THEN open SweetAlert
+    const result = await Swal.fire({
+      title: `Report  ${reportReason} lesson?`,
+      text: ` This action cannot be undone.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, report it",
+    });
+
+    // ❗ If user cancels, reopen report modal (optional UX)
+    if (!result.isConfirmed) {
+      reportRef.current?.showModal();
+      return;
+    }
+
+    if (result.isDenied == true) {
+            Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: `Report  ${reportReason} lesson was unsuccessful?`,
+        showConfirmButton: false,
+        timer: 2500,
+      })
+      return
+    }
+    if (result.isConfirmed === !true) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: `Report  ${reportReason} lesson was unsuccessful?`,
+        showConfirmButton: false,
+        timer: 2500,
+      })
+    }
+    else{
+        Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: `Report  ${reportReason} lesson?`,
+        showConfirmButton: false,
+        timer: 2500,
+      });
+      return
+      }
+    console.log(result);
+
+    const reportData = {
+      lessonId: lesson._id,
+      reportedLessonTitle: lesson.title,
+      reporterUserId: user.uid,
+      reportedUserEmail: lesson.email,
+      reason: reportReason,
+      createdAt: new Date().toISOString(),
+    };
+
+    reportMutation.mutate(reportData);
+  };
+
+  const handleShare = () => {
+    reportRef.current?.close();
+    shareRef.current?.showModal();
+  };
   return (
     <div className="max-w-5xl mx-auto px-4 py-10 text-black">
       {/* 🔒 Premium Lock */}
@@ -188,23 +292,42 @@ reportRef.current?.showModal();
       </div>
 
       {/* 🔴 Report Modal */}
-      <dialog ref={reportRef}    className="modal">
+      <dialog ref={reportRef} className="modal">
         <div className="modal-box">
           <h3 className="font-bold mb-4">Report Lesson</h3>
-          <select className="select select-bordered w-full mb-4">
-            <option>Inappropriate Content</option>
-            <option>Hate Speech or Harassment</option>
-            <option>Misleading or False Information</option>
-            <option>Spam or Promotional Content</option>
-            <option>Sensitive or Disturbing Content</option>
-            <option>Other</option>
+
+          <select
+            className="select select-bordered w-full mb-4"
+            value={reportReason}
+            onChange={(e) => setReportReason(e.target.value)}
+          >
+            <option value="">Select a reason</option>
+            <option value="Inappropriate Content">Inappropriate Content</option>
+            <option value="Hate Speech or Harassment">
+              Hate Speech or Harassment
+            </option>
+            <option value="Misleading or False Information">
+              Misleading or False Information
+            </option>
+            <option value="Spam or Promotional Content">
+              Spam or Promotional Content
+            </option>
+            <option value="Sensitive or Disturbing Content">
+              Sensitive or Disturbing Content
+            </option>
+            <option value="Other">Other</option>
           </select>
+
           <div className="modal-action">
-            <button className="btn btn-error">Submit</button>
             <button
-              className="btn"
-              onClick={() => reportRef.current?.close()}
+              className="btn btn-error"
+              onClick={handleSubmitReport}
+              disabled={reportMutation.isPending}
             >
+              {reportMutation.isPending ? "Submitting..." : "Submit Report"}
+            </button>
+
+            <button className="btn" onClick={() => reportRef.current?.close()}>
               Cancel
             </button>
           </div>
@@ -214,46 +337,39 @@ reportRef.current?.showModal();
       {/* share modal */}
       <dialog ref={shareRef} className="modal ">
         <div className="modal-box ">
+          <div className=".Demo__container flex justify-center items-center gap-4">
+            <div className="Demo__some-network">
+              <FacebookShareButton
+                url={"www.facebook.com"}
+                className="Demo__some-network__share-button"
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+            </div>
+            <div className="Demo__some-network">
+              <FacebookMessengerShareButton
+                appId="521270401588372"
+                className="Demo__some-network__share-button"
+              >
+                <FacebookMessengerIcon size={32} round />
+              </FacebookMessengerShareButton>
+            </div>
 
-<div className=".Demo__container flex justify-center items-center gap-4">
-  <div className="Demo__some-network">
-        <FacebookShareButton
-          url={'www.facebook.com'}
-          className="Demo__some-network__share-button"
-        >
-          <FacebookIcon size={32} round />
-        </FacebookShareButton>
-        </div>
-        <div className="Demo__some-network">
-        <FacebookMessengerShareButton
-          
-          appId="521270401588372"
-          className="Demo__some-network__share-button"
-        >
-          <FacebookMessengerIcon size={32} round />
-        </FacebookMessengerShareButton>
-      </div>
-
-      <div className="Demo__some-network">
-        <TwitterShareButton
-          url={'www.x.com'}
-          
-          className="Demo__some-network__share-button"
-        >
-          <XIcon size={32} round />
-        </TwitterShareButton>
-      </div>
-</div>
-<div className="modal-action">
-            <button
-              className="btn"
-              onClick={() => shareRef.current?.close()}
-            >
+            <div className="Demo__some-network">
+              <TwitterShareButton
+                url={"www.x.com"}
+                className="Demo__some-network__share-button"
+              >
+                <XIcon size={32} round />
+              </TwitterShareButton>
+            </div>
+          </div>
+          <div className="modal-action">
+            <button className="btn" onClick={() => shareRef.current?.close()}>
               Cancel
             </button>
           </div>
         </div>
-
       </dialog>
     </div>
   );

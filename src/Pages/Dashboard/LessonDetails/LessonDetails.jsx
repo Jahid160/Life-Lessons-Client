@@ -12,8 +12,10 @@ import {
 
 import { useNavigate, useParams, Link } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const LessonDetails = () => {
+  const axiosSecure = useAxiosSecure()
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();

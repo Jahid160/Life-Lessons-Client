@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import { TiHomeOutline } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdAddCircle, MdManageAccounts } from "react-icons/md";
+import { MdAddCircle, MdManageAccounts, MdReportGmailerrorred } from "react-icons/md";
 import { FaBookReader } from 'react-icons/fa';
 import { SiManageiq } from "react-icons/si";
 import useRole from '../Hooks/useRole';
@@ -92,6 +92,14 @@ const DashboardLayout = () => {
             <SiManageiq />
             
             <span className="is-drawer-close:hidden">Manage Lessons</span>
+          </NavLink>
+        </li>
+          <li>
+          <NavLink to={'admin/reported-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="ReportedLessons">
+            {/* Lesson icon */}
+            <MdReportGmailerrorred />
+            
+            <span className="is-drawer-close:hidden">Reported Lessons</span>
           </NavLink>
         </li>
           </>
