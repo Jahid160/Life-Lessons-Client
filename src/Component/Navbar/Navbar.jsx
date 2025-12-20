@@ -21,7 +21,7 @@ const Navbar = () => {
         <Link to={'/life-lessons'}>Public Lessons</Link>
       </li>
       <li>
-        <Link to={'pricing'}>pricing</Link>
+        <Link to={'premium-upgrade'}>PremiumUpgrade</Link>
       </li>
       <li>
         <Link>Favorites</Link>

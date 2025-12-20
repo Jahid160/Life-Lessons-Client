@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './index.css'
 import App from './App.jsx'
 import router from './Router/Route.jsx'
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
+     <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>,
 )

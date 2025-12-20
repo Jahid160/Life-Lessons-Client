@@ -8,7 +8,7 @@ import MainLayout from "../Layout/MainLayout";
 import DashboardLayout from "../Layout/DashboardLayout";
 import Home from "../Pages/Home/Home/Home"
 import AddLesson from "../Pages/AddLesson/AddLesson";
-import Pricing from "../Pages/Pricing/Pricing";
+
 import PrivateRoute from "./PrivateRoute";
 import Error404Page from "../Component/ErrorPage/Error404Page";
 import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
@@ -24,6 +24,9 @@ import ManageUsers from "../Pages/Dashboard/ManageUsers/ManageUsers";
 import ManageLessons from "../Pages/Dashboard/ManageLessons/ManageLessons";
 import ReportedLessons from "../Pages/Dashboard/ReportedLessons/ReportedLessons";
 import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
+import PremiumUpgrade from "../Pages/PremiumUpgrade/PremiumUpgrade";
+import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess/PaymentSuccess";
+import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel/PaymentCancel";
 
 const router = createBrowserRouter([
   {
@@ -51,13 +54,22 @@ const router = createBrowserRouter([
         </PrivateRoute>
       },
       {
-        path: "pricing",
+        path: "premium-upgrade",
         element: (
           <PrivateRoute>
-            <Pricing></Pricing>
+            <PremiumUpgrade></PremiumUpgrade>
           </PrivateRoute>
         ),
       },
+      {
+        path: '/payment-success',
+        element: <PaymentSuccess></PaymentSuccess>
+      },
+      {
+        path: '/payment-cancel',
+        element: <PaymentCancel></PaymentCancel>
+      }
+
     ],
   },
 
