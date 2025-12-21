@@ -3,9 +3,21 @@ import { Link } from "react-router";
 import logo from "../../assets/life lessons.png";
 import useAuth from "../../Hooks/useAuth";
 
+
+import useUserByEmail from "../../Hooks/useUserByEmail ";
+import Loading from "../Loading/Loading";
+
 const Navbar = () => {
+  
   const { user, logOut } = useAuth();
-  console.log(user?.photoURL);
+  // console.log(user?.photoURL);
+  const { userData, isLoading, refetch } = useUserByEmail();
+
+  if (isLoading) return <Loading></Loading>;
+
+console.log(userData?.isPremium);
+const isPremium = userData?.isPremium === false || userData?.isPremium === "false";
+    
   const links = (
     <>
       <li>
@@ -20,9 +32,17 @@ const Navbar = () => {
       <li>
         <Link to={'/life-lessons'}>Public Lessons</Link>
       </li>
-      <li>
+{  isPremium &&
+        <li>
         <Link to={'premium-upgrade'}>PremiumUpgrade</Link>
       </li>
+}
+{ userData?.isPremium
+ == true   &&
+        <li>
+        ⭐
+      </li>
+}
       <li>
         <Link>Favorites</Link>
       </li>

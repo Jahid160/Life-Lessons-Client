@@ -15,7 +15,7 @@ const ProfilePage = () => {
 const {data: userinfo = []} = useQuery({
   queryKey: ['userLessons'],
   queryFn: async()=>{
-  const res = await axiosSecure.get(`/user/${email}`)
+  const res = await axiosSecure.get(`/users/${email}`)
   return res.data
   }
   

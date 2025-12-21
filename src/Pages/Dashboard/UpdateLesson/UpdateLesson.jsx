@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
+import useUserByEmail from "../../../Hooks/useUserByEmail ";
+import Loading from "../../../Component/Loading/Loading";
 
 const UpdateLesson = () => {
   const { id } = useParams();
@@ -29,7 +31,7 @@ const UpdateLesson = () => {
   } = lesson;
   console.log(title);
 
-  const isPremiumUser = false;
+
 
   //  update related info
   const { user } = useAuth();
@@ -68,7 +70,7 @@ const UpdateLesson = () => {
         description: data.description,
         category: data.category,
         emotionalTone: data.emotionalTone,
-        createdAt:lesson?.createdAt,
+        createdAt: lesson?.createdAt,
         privacy: data.privacy,
         accessLevel: data.accessLevel,
         email: user?.email,
@@ -76,7 +78,7 @@ const UpdateLesson = () => {
         image: imageUrl, // Add uploaded PNG URL
       };
 
-      console.log("lesson createAt",lesson);
+      console.log("lesson createAt", lesson);
 
       fetch(`http://localhost:3000/lessons/${id}`, {
         method: "PATCH",
@@ -90,6 +92,10 @@ const UpdateLesson = () => {
     }
   };
 
+  const { userData, isLoading: loading, refetch } = useUserByEmail();
+
+  if (loading) return <Loading></Loading>;
+  const isPremium = userData?.isPremium;
   return (
     <div className="max-w-4xl mx-auto p-6 text-gray-800">
       <div className="bg-base-100 shadow-xl rounded-2xl border border-base-300 p-8">
@@ -117,8 +123,8 @@ const UpdateLesson = () => {
             <label className=" font-medium">
               Full Description / Story / Insight
             </label>
-            <textarea 
-            defaultValue={description}
+            <textarea
+              defaultValue={description}
               {...register("description", { required: true })}
               className="textarea textarea-bordered w-full h-40 rounded-xl "
               placeholder="Write your full lesson, story or insight..."
@@ -131,7 +137,7 @@ const UpdateLesson = () => {
             <div>
               <label className="label font-medium">Category</label>
               <select
-              defaultValue={category}
+                defaultValue={category}
                 className="select select-bordered w-full rounded-xl"
                 {...register("category", { required: true })}
               >
@@ -147,7 +153,7 @@ const UpdateLesson = () => {
             <div>
               <label className="label font-medium">Emotional Tone</label>
               <select
-              defaultValue={emotionalTone}
+                defaultValue={emotionalTone}
                 className="select select-bordered w-full rounded-xl"
                 {...register("emotionalTone", { required: true })}
               >
@@ -162,7 +168,7 @@ const UpdateLesson = () => {
             <div>
               <label className="label font-medium">Privacy</label>
               <select
-              defaultValue={privacy}
+                defaultValue={privacy}
                 {...register("privacy", { required: true })}
                 className="select select-bordered w-full rounded-xl"
               >
@@ -179,24 +185,30 @@ const UpdateLesson = () => {
 
               <div className="relative">
                 <select
-                defaultValue={accessLevel}
+                  defaultValue={accessLevel}
                   {...register("accessLevel")}
                   className="select select-bordered w-full rounded-xl"
-                  disabled={!isPremiumUser}
+                  disabled={!isPremium}
                   data-tip={
-                    !isPremiumUser
+                    !isPremium
                       ? "Upgrade to Premium to create paid lessons"
                       : ""
                   }
                 >
-                  <option>Free</option>
-                  <option>Premium</option>
+                  {isPremium == true ? (
+                    <>
+                      <option>Free</option>
+                      <option>Premium</option>
+                    </>
+                  ) : (
+                    <option>Free</option>
+                  )}
                 </select>
 
-                {!isPremiumUser && (
+                {!isPremium == 'false' && (
                   <div
                     className="tooltip tooltip-open absolute left-0 top-0"
-                    // data-tip="Upgrade to Premium to create paid lessons"
+                    data-tip="Upgrade to Premium to create paid lessons"
                   ></div>
                 )}
               </div>
@@ -208,7 +220,6 @@ const UpdateLesson = () => {
             <label className="label font-medium">Upload Image (Optional)</label>
             <div className="p-6 bg-base-200 rounded-xl border border-base-300 flex items-center gap-4">
               <input
-              
                 type="file"
                 accept="image/*"
                 {...register("photo")}

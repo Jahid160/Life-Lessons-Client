@@ -1,8 +1,11 @@
+
 import { FaUserCircle, FaRegSmile, FaTag, FaLock, FaUnlock, FaArrowRight } from "react-icons/fa";
 import Loading from "../../../../Component/Loading/Loading";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
+import useUserByEmail from "../../../../Hooks/useUserByEmail ";
+
 
 const LessonCard = () => {
 
@@ -23,17 +26,17 @@ const {
   });
   console.log(lessons);
 
-  if (isLoading) return <Loading></Loading>;
-  if (error) return <p className="text-error">Failed to load lessons</p>;
+  const { userData, isLoading: userLoading } = useUserByEmail();
+
+  if (isLoading || userLoading) return <Loading></Loading>;
+
+  
 
 
 
-console.log(lessons);
+const isPremium = userData?.isPremium === false || userData?.isPremium === "false";
 
 
-const currentUser = {
-  isPremium: false,
-};
 
   return (
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -51,8 +54,10 @@ const currentUser = {
           image
         } = lesson;
 
+        
+
         const isLocked =
-          accessLevel === "Premium" && !currentUser.isPremium;
+          accessLevel === "Premium" && isPremium;
 
         return (
           <div
@@ -63,12 +68,12 @@ const currentUser = {
             {isLocked && (
               <div className="absolute inset-0 z-20 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center text-center px-6">
                 <FaLock className="text-3xl text-warning mb-3" />
-                <h3 className="font-semibold text-lg">
+                <h3 className="font-semibold text-lg text-black">
                   Premium Lesson
                 </h3>
-                <p className="text-sm text-gray-500">
+                <Link to={'/premium-upgrade'} className="text-sm text-gray-500">
                   Upgrade to view this lesson
-                </p>
+                </Link>
               </div>
             )}
 
