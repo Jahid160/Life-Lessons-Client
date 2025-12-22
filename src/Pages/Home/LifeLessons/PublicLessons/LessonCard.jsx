@@ -5,12 +5,13 @@ import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate } from "react-router";
 import useUserByEmail from "../../../../Hooks/useUserByEmail ";
+import useAuth from "../../../../Hooks/useAuth";
 
 
 const LessonCard = () => {
 
 const axiosSecure = useAxiosSecure()
-
+const {user} = useAuth()
 
 const {
     data: lessons = [],
@@ -23,6 +24,7 @@ const {
       const res = await axiosSecure.get(`/lessons`);
       return res.data;
     },
+    enabled: !!user?.uid,
   });
   console.log(lessons);
 

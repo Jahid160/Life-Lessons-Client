@@ -108,7 +108,7 @@ const isPremium = userData?.isPremium === false || userData?.isPremium === "fals
                 <Link>{user?.displayName}</Link>
               </li>
               <li className="my-4">
-                <Link to={`profile/user/${user?.email}`}>Profile</Link>
+                <Link to={`/dashboard/profile/${user?.email}`}>Profile</Link>
               </li>
               <li>
                 <Link to="/dashboard">Dashboard</Link>

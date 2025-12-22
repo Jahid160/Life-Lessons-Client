@@ -1,12 +1,11 @@
 import { createBrowserRouter } from "react-router";
 import Login from "../Pages/Auth/Login/Login";
 
-
 import Register from "../Pages/Auth/Register/Register";
 import AuthLayout from "../Layout/AuthLayout";
 import MainLayout from "../Layout/MainLayout";
 import DashboardLayout from "../Layout/DashboardLayout";
-import Home from "../Pages/Home/Home/Home"
+import Home from "../Pages/Home/Home/Home";
 import AddLesson from "../Pages/AddLesson/AddLesson";
 
 import PrivateRoute from "./PrivateRoute";
@@ -39,20 +38,25 @@ const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: '/life-lessons',
-        element:<LessonCard></LessonCard>
+        path: "/life-lessons",
+        element: <LessonCard></LessonCard>,
       },
       {
-        path: '/life-lessons/details/:id',
-        element: <PrivateRoute>
-          <LessonCardDetails></LessonCardDetails>
-        </PrivateRoute>
+        path: "/life-lessons/details/:id",
+        element: (
+          <PrivateRoute>
+            <LessonCardDetails></LessonCardDetails>
+          </PrivateRoute>
+        ),
       },
+
       {
-        path: 'profile/user/:email',
-        element: <PrivateRoute>
-          <ProfilePage></ProfilePage>
-        </PrivateRoute>
+        path: "/profile/:email",
+        element: (
+          <PrivateRoute>
+            <ProfilePage></ProfilePage>
+          </PrivateRoute>
+        ),
       },
       {
         path: "premium-upgrade",
@@ -63,14 +67,13 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/payment-success',
-        element: <PaymentSuccess></PaymentSuccess>
+        path: "/payment-success",
+        element: <PaymentSuccess></PaymentSuccess>,
       },
       {
-        path: '/payment-cancel',
-        element: <PaymentCancel></PaymentCancel>
-      }
-
+        path: "/payment-cancel",
+        element: <PaymentCancel></PaymentCancel>,
+      },
     ],
   },
 
@@ -101,9 +104,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <PrivateRoute>
-          <DashboardHome></DashboardHome>
-        </PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <DashboardHome></DashboardHome>
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-lesson",
@@ -113,10 +118,7 @@ const router = createBrowserRouter([
         path: "my-lessons",
         element: <MyLessons />,
       },
-      {
-        path: 'my-profile',
-        element: <MyProfile></MyProfile>
-      },
+
       // {
       //   path: 'lesson-details/:id',
       //   element: <PrivateRoute>
@@ -127,42 +129,55 @@ const router = createBrowserRouter([
         path: "my-lessons/update-lesson/:id",
         element: <UpdateLesson></UpdateLesson>,
       },
+            {
+        path: 'profile/:email',
+        element: <MyProfile></MyProfile>
+      },
 
       // admin only routes
       {
         path: "admin/manage-users",
-        element: <AdminRoute>
-          <ManageUsers></ManageUsers>
-        </AdminRoute>
-      },
-      {
-        path: "/dashboard/my-favorites",
-        element: <AdminRoute>
-          <MyFavorites></MyFavorites>
-        </AdminRoute>
-      },
-      {
-        path: "admin/manage-lessons",
-        element: <AdminRoute>
-          <ManageLessons></ManageLessons>
-        </AdminRoute>
-      },
-      {
-        path: "admin/reported-lessons",
-        element: <AdminRoute>
-          <ReportedLessons></ReportedLessons>
-        </AdminRoute>
-      },
-      {
-        path: "admin/profile",
-        element: <AdminRoute>
-          <AdminProfile></AdminProfile>
-        </AdminRoute>
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
       },
       {
         path: "my-favorites",
-        element:
-          <ManageUsers></ManageUsers>
+        element: (
+          <PrivateRoute>
+            <MyFavorites></MyFavorites>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "admin/manage-lessons",
+        element: (
+          <AdminRoute>
+            <ManageLessons></ManageLessons>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/reported-lessons",
+        element: (
+          <AdminRoute>
+            <ReportedLessons></ReportedLessons>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/profile",
+        element: (
+          <AdminRoute>
+            <AdminProfile></AdminProfile>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "my-favorites",
+        element: <ManageUsers></ManageUsers>,
       },
     ],
   },

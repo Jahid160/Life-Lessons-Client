@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import useAuth from "../../../Hooks/useAuth";
+
 import Loading from "../../../Component/Loading/Loading";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
 
 const MyFavorites = () => {
   const axiosSecure = useAxiosSecure();
@@ -17,22 +18,23 @@ const MyFavorites = () => {
 
   // Fetch saved lessons
   const { data: savedLessons = [], isLoading } = useQuery({
-    queryKey: ["saved-lessons", user?.accessToken],
+    queryKey: ["saved-lessons"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/savedLessons/${user?.accessToken}`);
-      return res.data; // array of lessons
+      const res = await axiosSecure.get("/savedLessons/users");
+      return res.data;
     },
-    enabled: !!user?.accessToken,
+    enabled: !!user.uid,
   });
-
+  console.log(savedLessons);
+  // console.log(user?.accessToken);
   // Remove from favorites
   const removeMutation = useMutation({
-    mutationFn: async (lessonId) => {
-      const res = await axiosSecure.delete(`/savedLessons/${lessonId}`);
+    mutationFn: async (id) => {
+      const res = await axiosSecure.delete(`/savedLessons/${id}`);
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["saved-lessons", user?.accessToken]);
+      queryClient.invalidateQueries(["saved-lessons", user?.uid]);
       Swal.fire({
         icon: "success",
         title: "Removed from favorites",
@@ -54,7 +56,7 @@ const MyFavorites = () => {
   });
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 text-black">
       <h1 className="text-2xl font-bold mb-6">My Saved Lessons</h1>
 
       {/* Filters */}
@@ -90,20 +92,20 @@ const MyFavorites = () => {
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Emotional Tone</th>
-              <th>Saved At</th>
+              <th>lessonId</th>
+              <th>userId</th>
+              
+              <th>createdAt</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredLessons.map((lesson) => (
               <tr key={lesson._id}>
-                <td>{lesson.title}</td>
-                <td>{lesson.category}</td>
-                <td>{lesson.emotionalTone}</td>
-                <td>{new Date(lesson.savedAt).toLocaleDateString()}</td>
+                <td>{lesson.lessonId}</td>
+                <td>{lesson.userId}</td>
+                
+                <td>{new Date(lesson.createdAt).toLocaleDateString()}</td>
                 <td className="flex gap-2">
                   <button
                     className="btn btn-error btn-sm"

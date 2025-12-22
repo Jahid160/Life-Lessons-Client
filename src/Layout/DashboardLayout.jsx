@@ -5,11 +5,12 @@ import { CgProfile } from "react-icons/cg";
 import { GrUserAdmin } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdAddCircle, MdManageAccounts, MdReportGmailerrorred } from "react-icons/md";
-import { FaBookReader } from 'react-icons/fa';
+import { FaBookReader, FaRegBookmark } from 'react-icons/fa';
 import { SiManageiq } from "react-icons/si";
 import useRole from '../Hooks/useRole';
+import useAuth from '../Hooks/useAuth';
 const DashboardLayout = () => {
-
+const {user} = useAuth()
   const { role } = useRole();
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
@@ -49,7 +50,7 @@ const DashboardLayout = () => {
             <span className="is-drawer-close:hidden">Add Lesson</span>
           </NavLink>
         </li>
-        {/* My favorites Lesson  */}
+        {/* My  Lesson  */}
         <li>
           <NavLink to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
             {/* Lesson icon */}
@@ -60,20 +61,20 @@ const DashboardLayout = () => {
         </li>
         {/* My Lesson  item */}
         <li>
-          <NavLink to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
+          <NavLink to={'my-favorites'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyFavorites">
             {/* Lesson icon */}
-            <FaBookReader />
+            <FaRegBookmark />
             
-            <span className="is-drawer-close:hidden">My Lesson</span>
+            <span className="is-drawer-close:hidden">My Favorites</span>
           </NavLink>
         </li>
-        {/* My Lesson  item */}
+        {/* My Profile  item */}
         <li>
-          <NavLink to={'my-lessons'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
+          <NavLink to={`profile/${user?.email}`} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="MyLesson">
             {/* Lesson icon */}
-            <FaBookReader />
+            <CgProfile />
             
-            <span className="is-drawer-close:hidden">My Lesson</span>
+            <span className="is-drawer-close:hidden">My Profile</span>
           </NavLink>
         </li>
 

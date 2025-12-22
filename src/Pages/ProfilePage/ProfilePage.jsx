@@ -8,7 +8,7 @@ import { Link, useParams } from "react-router";
 const ProfilePage = () => {
   // mock user data (replace with real data later)
   const {email} = useParams()
-  // console.log(email);
+  console.log(email);
   const axiosSecure = useAxiosSecure()
 
   // userinfo find call

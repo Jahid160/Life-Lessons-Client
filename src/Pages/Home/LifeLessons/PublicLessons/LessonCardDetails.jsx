@@ -61,6 +61,7 @@ const LessonCardDetails = () => {
     },
     enabled: !!id,
   });
+  console.log(lesson?.email);
 
   /* ===================== REPORT MUTATION ===================== */
   const reportMutation = useMutation({
@@ -94,14 +95,37 @@ const likeMutation = useMutation({
 
 const saveMutation = useMutation({
   mutationFn: async () => {
-    const res = await axiosSecure.post("/savedLessons/toggle", { lessonId: lesson._id });
-    return res.data;
+    const res = await axiosSecure.post("/savedLessons/toggle", {
+      lessonId: lesson._id,
+    });
+    return res.data; // { saved: true | false }
   },
-  onSuccess: () => {
-    queryClient.invalidateQueries(["lesson-details", id]);
+
+  onSuccess: (data) => {
+
+    queryClient.invalidateQueries(["lesson-details", lesson._id]);
+
+
+    // queryClient.invalidateQueries(["saved-lessons"]);
+
+  
+    if (data.saved) {
+      Swal.fire({
+        icon: "success",
+        title: "Saved to favorites",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Removed from favorites",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+    }
   },
 });
-
 
 
   /* ===================== LOADING & ERROR ===================== */
@@ -203,6 +227,7 @@ const saveMutation = useMutation({
           <span><FaHeart className="mr-0.5"/> {lesson?.likesCount }</span>
           <span><FaBookmark className="mr-0.5"/> {lesson.favoritesCount || 0}</span>
           <span><FaEye className="mr-0.5"/> {views}</span>
+          <Link className="text-yellow-700 text-xl underline" to={`/profile/${lesson.email}`}>View all lessons by this author</Link>
         </div>
 
         <div className="flex gap-4 mb-10">
