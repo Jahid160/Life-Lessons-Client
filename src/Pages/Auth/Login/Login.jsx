@@ -14,7 +14,7 @@ const { register, handleSubmit, formState: { errors } } = useForm();
         signInUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
-                navigate(location?.state || '/')
+                navigate(location?.state || '/dashboard')
             })
             .catch(error => {
                 console.log(error)

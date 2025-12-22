@@ -139,14 +139,14 @@ const saveMutation = useMutation({
    
 
   const handleLike = () => {
-    if (!user) return navigate("/login");
+  
      likeMutation.mutate();
   setLiked(prev => !prev);
 
   };
 
   const handleSave = () => {
-    if (!user) return navigate("/login");
+  
     saveMutation.mutate();
   setSaved(prev => !prev);
 
@@ -158,7 +158,7 @@ const saveMutation = useMutation({
   };
 
   const handleSubmitReport = async () => {
-    if (!user) return navigate("/login");
+    
 
     if (!reportReason) {
       reportRef.current?.close();

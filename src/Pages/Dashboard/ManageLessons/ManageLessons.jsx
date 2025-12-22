@@ -1,25 +1,20 @@
-import React from 'react';
-import useAxiosSecure from '../../../Hooks/useAxiosSecure';
-import { useQuery } from '@tanstack/react-query';
-import useAuth from '../../../Hooks/useAuth';
+import React from "react";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
-import {
-  FaTrash,
-  FaStar,
-  FaCheckCircle,
-  FaFilter,
-} from "react-icons/fa";
-import { useState } from "react";
+import { FaTrash, FaStar, FaCheckCircle, FaFilter } from "react-icons/fa";
+
 
 const ManageLessons = () => {
-    const axiosSecure = useAxiosSecure();
-    const [filters, setFilters] = useState({
-    category: "",
-    visibility: "",
-    flagged: "",
-  });
-    const {user} = useAuth()
-  const { data: lessons = [], isLoading,refetch } = useQuery({
+  const axiosSecure = useAxiosSecure();
+
+  const { user } = useAuth();
+  const {
+    data: lessons = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["lesson"],
     queryFn: async () => {
       const result = await axiosSecure.get(`/lessons`, user?.email);
@@ -27,11 +22,10 @@ const ManageLessons = () => {
     },
   });
 
-
   // 🔹 Stats
-  const publicCount = lessons.filter(l => l.visibility === "public").length;
-  const privateCount = lessons.filter(l => l.visibility === "private").length;
-  const flaggedCount = lessons.filter(l => l.flagged === true).length;
+  const publicCount = lessons.filter((l) => l.privacy === "public").length;
+  const privateCount = lessons.filter((l) => l.visibility === "private").length;
+  const flaggedCount = lessons.filter((l) => l.flagged === true).length;
 
   // 🔹 Delete lesson
   const handleDelete = (id) => {
@@ -67,7 +61,7 @@ const ManageLessons = () => {
 
   console.log(lessons);
   return (
-<div className="p-6 text-black">
+    <div className="p-6 text-black">
       <h2 className="text-2xl font-bold mb-6">Lesson Moderation</h2>
 
       {/* 📊 Stats */}
@@ -86,41 +80,7 @@ const ManageLessons = () => {
         </div>
       </div>
 
-      {/* 🔍 Filters */}
-      <div className="flex flex-wrap gap-4 mb-6 items-center">
-        <FaFilter />
-
-        <select
-          className="select select-bordered"
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-        >
-          <option value="">All Categories</option>
-          <option value="life">Life</option>
-          <option value="mental">Mental</option>
-          <option value="career">Career</option>
-        </select>
-
-        <select
-          className="select select-bordered"
-          onChange={(e) =>
-            setFilters({ ...filters, visibility: e.target.value })
-          }
-        >
-          <option value="">All Visibility</option>
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select>
-
-        <select
-          className="select select-bordered"
-          onChange={(e) =>
-            setFilters({ ...filters, flagged: e.target.value })
-          }
-        >
-          <option value="">All Content</option>
-          <option value="true">Flagged</option>
-        </select>
-      </div>
+ 
 
       {/* 📋 Table */}
       <div className="overflow-x-auto">
@@ -142,8 +102,14 @@ const ManageLessons = () => {
                 <td>{lesson.email}</td>
                 <td>{lesson.category}</td>
                 <td>
-                  <span className={`badge ${lesson.visibility === "public" ? "badge-success" : "badge-warning"}`}>
-                    {lesson.visibility}
+                  <span
+                    className={`badge ${
+                      lesson.visibility === "public"
+                        ? "badge-success"
+                        : "badge-warning"
+                    }`}
+                  >
+                    {lesson.privacy}
                   </span>
                 </td>
                 <td>

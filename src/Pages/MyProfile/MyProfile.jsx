@@ -78,7 +78,7 @@ const MyProfile = () => {
               <div className="flex-1">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
                   {user?.displayName}
-                  {profile?.isPremium && (
+                  {profile?.isPremium == true || profile?.isPremium == "true" && (
                     <span className="badge badge-warning">Premium ⭐</span>
                   )}
                 </h2>

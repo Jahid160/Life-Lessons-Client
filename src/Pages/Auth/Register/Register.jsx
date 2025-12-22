@@ -55,7 +55,7 @@ const Register = () => {
         updateUserProfile(userProfile)
           .then(() => {
             // console.log('user profile updated done.')
-            navigate(location.state || "/");
+            navigate(location.state || "/dashboard");
           })
           .catch((error) => console.log(error));
       });
