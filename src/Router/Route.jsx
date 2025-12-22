@@ -27,6 +27,7 @@ import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
 import PremiumUpgrade from "../Pages/PremiumUpgrade/PremiumUpgrade";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel/PaymentCancel";
+import MyFavorites from "../Pages/Dashboard/MyFavorites/MyFavorites";
 
 const router = createBrowserRouter([
   {
@@ -132,6 +133,12 @@ const router = createBrowserRouter([
         path: "admin/manage-users",
         element: <AdminRoute>
           <ManageUsers></ManageUsers>
+        </AdminRoute>
+      },
+      {
+        path: "/dashboard/my-favorites",
+        element: <AdminRoute>
+          <MyFavorites></MyFavorites>
         </AdminRoute>
       },
       {
