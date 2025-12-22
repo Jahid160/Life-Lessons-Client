@@ -9,6 +9,7 @@ import { FaBookReader, FaRegBookmark } from 'react-icons/fa';
 import { SiManageiq } from "react-icons/si";
 import useRole from '../Hooks/useRole';
 import useAuth from '../Hooks/useAuth';
+import Logo from '../Component/Logo/Logo';
 const DashboardLayout = () => {
 const {user} = useAuth()
   const { role } = useRole();
@@ -35,7 +36,12 @@ const {user} = useAuth()
       <ul className="menu w-full grow">
         {/* List item */}
         <li>
-          <Link to={'/'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
+          <Link to={'/'}>
+          <Logo ></Logo>
+          </Link>
+        </li>
+        <li>
+          <Link to={'/dashboard'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
             {/* Home icon */}
             <TiHomeOutline />
             <span className="is-drawer-close:hidden">Homepage</span>

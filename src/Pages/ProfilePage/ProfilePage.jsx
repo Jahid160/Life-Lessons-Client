@@ -4,6 +4,8 @@ import { FaUserCircle, FaRegSmile, FaTag, FaLock, FaUnlock, FaArrowRight,FaEnvel
 
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Link, useParams } from "react-router";
+import useUserByEmail from "../../Hooks/useUserByEmail ";
+import Loading from "../../Component/Loading/Loading";
 
 const ProfilePage = () => {
   // mock user data (replace with real data later)
@@ -34,9 +36,15 @@ const {data: userLessons = []} = useQuery({
 
 console.log(userLessons);
 
-const currentUser = {
-  isPremium: false,
-};
+  const { userData, isLoading: userLoading } = useUserByEmail();
+
+  if(userLoading){
+    return <Loading></Loading>
+  }
+
+  const isPremium = userData?.isPremium === false || userData?.isPremium === "false";
+
+
 
   return (
     <div className="min-h-screen bg-base-200 py-10 px-4 text-black">
@@ -106,7 +114,7 @@ const currentUser = {
         } = lesson;
 
         const isLocked =
-          accessLevel === "Premium" && !currentUser.isPremium;
+          accessLevel === "Premium" && isPremium;
 
         return (
           <div

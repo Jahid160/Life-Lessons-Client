@@ -175,10 +175,7 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      {
-        path: "my-favorites",
-        element: <ManageUsers></ManageUsers>,
-      },
+
     ],
   },
   {
