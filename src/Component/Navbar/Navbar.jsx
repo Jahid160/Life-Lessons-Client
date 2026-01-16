@@ -1,51 +1,58 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import logo from "../../assets/life lessons.png";
 import useAuth from "../../Hooks/useAuth";
-
 
 import useUserByEmail from "../../Hooks/useUserByEmail ";
 import Loading from "../Loading/Loading";
 
 const Navbar = () => {
-  
   const { user, logOut } = useAuth();
   // console.log(user?.photoURL);
   const { userData, isLoading, refetch } = useUserByEmail();
 
   if (isLoading) return <Loading></Loading>;
 
-console.log(userData?.isPremium);
-const isPremium = userData?.isPremium === false || userData?.isPremium === "false";
-    
+  console.log(userData);
+  const isPremium =
+    userData?.isPremium === false || userData?.isPremium === "false";
+
   const links = (
     <>
       <li>
-        <Link to={"/"}>Home</Link>
+        <NavLink to={"/"}>Home</NavLink>
       </li>
+
       <li>
-        <Link to={'dashboard/add-lesson'}>Add Lesson</Link>
+        <NavLink to={"/life-lessons"}>Public Lessons</NavLink>
       </li>
-      <li>
-        <Link to={'dashboard/my-lessons'}>My Lessons</Link>
-      </li>
-      <li>
-        <Link to={'/life-lessons'}>Public Lessons</Link>
-      </li>
-{  isPremium &&
+      {isPremium && (
         <li>
-        <Link to={'premium-upgrade'}>PremiumUpgrade</Link>
-      </li>
-}
-{ userData?.isPremium
- == true   &&
-        <li>
-        ⭐
-      </li>
-}
+          <NavLink to={"premium-upgrade"}>PremiumUpgrade</NavLink>
+        </li>
+      )}
+      {userData?.isPremium == true && <li>⭐</li>}
+
       <li>
-        <Link>Favorites</Link>
+        <NavLink to={"/contact"}>Contact</NavLink>
       </li>
+      <li>
+        <NavLink to={"/about"}>About</NavLink>
+      </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to={"/dashboard/my-favorites"}>Favorites</NavLink>
+          </li>
+          <li>
+            <NavLink to={"dashboard/add-lesson"}>Add Lesson</NavLink>
+          </li>
+          <li>
+            <NavLink to={"dashboard/my-lessons"}>My Lessons</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
 
@@ -87,7 +94,9 @@ const isPremium = userData?.isPremium === false || userData?.isPremium === "fals
 
       {/* CENTER */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 bg-green-300 text-gray-600 font-semibold">{links}</ul>
+        <ul className="menu menu-horizontal px-1 bg-green-300 text-gray-600 font-semibold">
+          {links}
+        </ul>
       </div>
 
       {/* RIGHT SIDE */}

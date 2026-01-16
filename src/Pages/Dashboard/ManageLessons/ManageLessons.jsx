@@ -5,11 +5,20 @@ import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { FaTrash, FaStar, FaCheckCircle, FaFilter } from "react-icons/fa";
 
-
 const ManageLessons = () => {
   const axiosSecure = useAxiosSecure();
 
   const { user } = useAuth();
+
+  // 🔹 Platform stats
+  const { data: stats, isLoading: LoadingData } = useQuery({
+    queryKey: ["admin-stats"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/admin/stats");
+      return res.data;
+    },
+  });
+
   const {
     data: lessons = [],
     isLoading,
@@ -17,15 +26,12 @@ const ManageLessons = () => {
   } = useQuery({
     queryKey: ["lesson"],
     queryFn: async () => {
-      const result = await axiosSecure.get(`/lessons`, user?.email);
+      const result = await axiosSecure.get(`/lessonsAdmin`, user?.email);
       return result.data;
     },
   });
 
   // 🔹 Stats
-  const publicCount = lessons.filter((l) => l.privacy === "public").length;
-  const privateCount = lessons.filter((l) => l.visibility === "private").length;
-  const flaggedCount = lessons.filter((l) => l.flagged === true).length;
 
   // 🔹 Delete lesson
   const handleDelete = (id) => {
@@ -45,42 +51,43 @@ const ManageLessons = () => {
     });
   };
 
-  // 🔹 Feature lesson
-  const handleFeature = async (id) => {
-    await axiosSecure.patch(`/lessons/feature/${id}`);
-    refetch();
-  };
-
   // 🔹 Mark reviewed
-  const handleReviewed = async (id) => {
-    await axiosSecure.patch(`/lessons/review/${id}`);
-    refetch();
-  };
+// const handleReviewed = async (id) => {
+//   console.log(id);
+//   try {
+//     const { data } = await axiosSecure.patch(`/lessons/review/${id}`)
 
-  if (isLoading) return <p>Loading lessons...</p>;
+//     if (data.modifiedCount) {
+//       Swal.fire("Updated!", "Lesson status is now Approved.", "success");
+//       refetch(); 
+//     } else {
+//       Swal.fire("Error!", "Lesson not found.", "error");
+//     }
+//   } catch (error) {
+//     Swal.fire("Error!", "Something went wrong.", "error");
+//     console.error(error);
+//   }
+// };
 
-  console.log(lessons);
+
+  if (isLoading || LoadingData) return <p>Loading lessons...</p>;
+
+  console.log(stats);
   return (
     <div className="p-6 text-black">
       <h2 className="text-2xl font-bold mb-6">Lesson Moderation</h2>
 
       {/* 📊 Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="stat bg-base-200 rounded">
           <div className="stat-title">Public Lessons</div>
-          <div className="stat-value text-success">{publicCount}</div>
+          <div className="stat-value text-success">{stats.publicLessons}</div>
         </div>
         <div className="stat bg-base-200 rounded">
           <div className="stat-title">Private Lessons</div>
-          <div className="stat-value text-warning">{privateCount}</div>
-        </div>
-        <div className="stat bg-base-200 rounded">
-          <div className="stat-title">Flagged Content</div>
-          <div className="stat-value text-error">{flaggedCount}</div>
+          <div className="stat-value text-warning">{stats.privetLessons}</div>
         </div>
       </div>
-
- 
 
       {/* 📋 Table */}
       <div className="overflow-x-auto">
@@ -91,7 +98,7 @@ const ManageLessons = () => {
               <th>Creator</th>
               <th>Category</th>
               <th>Visibility</th>
-              <th>Status</th>
+              
               <th className="text-center">Actions</th>
             </tr>
           </thead>
@@ -112,27 +119,15 @@ const ManageLessons = () => {
                     {lesson.privacy}
                   </span>
                 </td>
-                <td>
-                  {lesson.reviewed ? (
-                    <span className="badge badge-info">Reviewed</span>
-                  ) : (
-                    <span className="badge badge-error">Pending</span>
-                  )}
-                </td>
-                <td className="flex gap-2 justify-center">
-                  <button
-                    className="btn btn-xs btn-warning"
-                    onClick={() => handleFeature(lesson._id)}
-                  >
-                    <FaStar />
-                  </button>
+                
 
-                  <button
+                <td className="flex gap-2 justify-center">
+                  {/* <button
                     className="btn btn-xs btn-info"
                     onClick={() => handleReviewed(lesson._id)}
                   >
                     <FaCheckCircle />
-                  </button>
+                  </button> */}
 
                   <button
                     className="btn btn-xs btn-error"

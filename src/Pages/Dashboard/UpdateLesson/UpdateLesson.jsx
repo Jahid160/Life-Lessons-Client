@@ -31,8 +31,6 @@ const UpdateLesson = () => {
   } = lesson;
   console.log(title);
 
-
-
   //  update related info
   const { user } = useAuth();
   const {
@@ -205,7 +203,7 @@ const UpdateLesson = () => {
                   )}
                 </select>
 
-                {!isPremium == 'false' && (
+                {!isPremium == "false" && (
                   <div
                     className="tooltip tooltip-open absolute left-0 top-0"
                     data-tip="Upgrade to Premium to create paid lessons"

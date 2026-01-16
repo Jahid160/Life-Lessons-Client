@@ -145,12 +145,12 @@ const MyLessons = () => {
                   {/* Actions */}
                   <td>
                     <div className="flex justify-center gap-2">
-                      <Link to={`lesson-details/${lesson._id}`}
+                      {/* <Link to={`lesson-details/${lesson._id}`}
                         className="btn btn-sm btn-ghost tooltip"
                         data-tip="Details"
                       >
                         <FaEye />
-                      </Link>
+                      </Link> */}
 
                       <Link
                         to={`update-lesson/${lesson._id}`}

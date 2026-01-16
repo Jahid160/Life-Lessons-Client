@@ -13,30 +13,26 @@ const SocialLogin = () => {
     const navigate = useNavigate();
 
 
-    const handleGoogleSignIn = () => {
-        signInGoogle()
-            .then(result => {
-                console.log(result.user);
-                
+const handleGoogleSignIn = () => {
+  signInGoogle()
+    .then(result => {
+      const user = result.user;
 
-                // create user in the database
-                const userInfo = {
-                    email: result.user.email,
-                    displayName: result.user.displayName,
-                    photoURL: result.user.photoURL
-                }
+      const userInfo = {
+        email: user?.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+ };
+ console.log(userInfo);
 
-                axiosSecure.post('/users', userInfo)
-                    .then(res => {
-                        console.log('user data has been stored', res.data)
-                        navigate(location.state || '/');
-                    })
+      axiosSecure.post('/users', userInfo)
+        .then(() => {
+          navigate(location.state || '/dashboard');
+        });
+    })
+    .catch(error => console.log(error));
+};
 
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
 
     return (
         <div className='text-center pb-8'>

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
+// https://life-lesson-server.vercel.app
+
 import { useNavigate } from 'react-router';
 import useAuth from './useAuth';
 
