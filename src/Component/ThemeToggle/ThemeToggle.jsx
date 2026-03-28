@@ -6,15 +6,11 @@ const ThemeToggle = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="px-4 py-2 rounded-md 
-                 bg-gray-200 text-black
-                 dark:bg-gray-800 dark:text-white
-                 transition"
-    >
-      {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-    </button>
+<button className="btn btn-primary" onClick={toggleTheme}>
+  {theme}
+  <br />
+  <small>html has dark? {document.documentElement.classList.contains('dark') ? 'YES' : 'NO'}</small>
+</button>
   );
 };
 

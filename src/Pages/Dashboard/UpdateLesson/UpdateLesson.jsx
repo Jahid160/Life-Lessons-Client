@@ -78,7 +78,7 @@ const UpdateLesson = () => {
 
       console.log("lesson createAt", lesson);
 
-      fetch(`http://localhost:3000/lessons/${id}`, {
+      fetch(`https://life-lesson-server.vercel.app/lessons/${id}`, {
         method: "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(lessonData),

@@ -1,64 +1,85 @@
-import { useRef } from "react";
-import { useAnimationFrame } from "motion/react";
+import React from "react";
+import { motion } from 'framer-motion';
+import { PenTool } from "lucide-react";
 
 export default function Loading() {
-  const ref = useRef(null);
+return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] w-full bg-transparent">
+      <div className="relative flex items-center justify-center">
+        {/* Outer Pulsing Ring */}
+        <motion.div
+          className="absolute w-24 height-24 border-2 border-indigo-200 rounded-full"
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.3, 0.1, 0.3],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
 
-  useAnimationFrame((t) => {
-    if (!ref.current) return;
+        {/* Inner Rotating Progress Circle */}
+        <motion.div
+          className="w-16 h-16 border-t-2 border-r-2 border-indigo-600 rounded-full"
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
 
-    const rotate = Math.sin(t / 10000) * 200;
-    const y = (1 + Math.sin(t / 1000)) * -50;
-
-    ref.current.style.transform = `translateY(${y}px) rotateX(${rotate}deg) rotateY(${rotate}deg)`;
-  });
-
-  return (
-    <div className="cube-container">
-      <div className="cube" ref={ref}>
-        <div className="side front" />
-        <div className="side left" />
-        <div className="side right" />
-        <div className="side top" />
-        <div className="side bottom" />
-        <div className="side back" />
+        {/* Central Icon */}
+        <motion.div
+          className="absolute text-indigo-600"
+          animate={{
+            y: [0, -5, 0],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <PenTool size={28} strokeWidth={1.5} />
+        </motion.div>
       </div>
-      <CubeStyles />
+
+      {/* Narrative Loading Text */}
+      <motion.div 
+        className="mt-8 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <p className="text-lg font-medium text-slate-700 italic">
+          "Every story has a lesson..."
+        </p>
+        <motion.div 
+          className="mt-2 flex justify-center gap-1"
+          initial="start"
+          animate="end"
+        >
+          {[0, 1, 2].map((index) => (
+            <motion.span
+              key={index}
+              className="w-1.5 h-1.5 bg-indigo-400 rounded-full"
+              variants={{
+                start: { opacity: 0.3 },
+                end: { opacity: 1 },
+              }}
+              transition={{
+                duration: 0.6,
+                repeat: Infinity,
+                repeatType: "reverse",
+                delay: index * 0.2,
+              }}
+            />
+          ))}
+        </motion.div>
+      </motion.div>
     </div>
-  );
-}
-
-/** CSS inside JSX */
-function CubeStyles() {
-  return (
-    <style>{`
-      .cube-container {
-        perspective: 800px;
-        width: 200px;
-        height: 200px;
-        margin: 0 auto;
-      }
-
-      .cube {
-        width: 200px;
-        height: 200px;
-        position: relative;
-        transform-style: preserve-3d;
-      }
-
-      .side {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        opacity: 0.7;
-      }
-
-      .front  { background: #ff7676; transform: rotateY(0deg) translateZ(100px); }
-      .right  { background: #76a8ff; transform: rotateY(90deg) translateZ(100px); }
-      .back   { background: #ffa76b; transform: rotateY(180deg) translateZ(100px); }
-      .left   { background: #7dffb1; transform: rotateY(-90deg) translateZ(100px); }
-      .top    { background: #d67dff; transform: rotateX(90deg) translateZ(100px); }
-      .bottom { background: #ffe36b; transform: rotateX(-90deg) translateZ(100px); }
-    `}</style>
   );
 }
