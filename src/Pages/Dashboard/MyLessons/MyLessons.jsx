@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaEdit, FaTrash, FaHeart, FaBookmark } from "react-icons/fa";
 
@@ -22,7 +22,7 @@ const MyLessons = () => {
   } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/lessons/user/${user.email}`);
+      const res = await axiosSecure.get(`/users/profile/${user.email}`);
       return res.data;
     },
   });

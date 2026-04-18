@@ -8,7 +8,7 @@ import StoryCategories from "../Component/StoryCategories/StoryCategories";
 import { ThemeContext } from "../Contexts/ThemeContext";
 
 const MainLayout = () => {
-  const { theme } = useContext(ThemeContext);
+  useContext(ThemeContext);
   return (
     <div className="max-w-7xl mx-auto ">
       <Navbar />

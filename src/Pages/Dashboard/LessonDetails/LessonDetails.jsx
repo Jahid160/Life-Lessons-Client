@@ -14,8 +14,8 @@ import { useNavigate, useParams, Link } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
+
 const LessonDetails = () => {
-  const axiosSecure = useAxiosSecure()
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -23,14 +23,22 @@ const LessonDetails = () => {
   const [lesson, setLesson] = useState(null);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [views] = useState(Math.floor(Math.random() * 10000));
+  const [views] = useState(() => Math.floor(Math.random() * 10000));
+  const axiosSecure = useAxiosSecure();
+
+  useEffect(() => {
+    if (lesson && user) {
+      setLiked(lesson.likedBy?.includes(user.uid) || false);
+      setSaved(lesson.savedBy?.includes(user.uid) || false);
+    }
+  }, [lesson, user]);
 
   // 🔹 Fetch lesson
   useEffect(() => {
-    fetch(`https://life-lesson-server.vercel.app/lessons/${id}`)
-      .then(res => res.json())
-      .then(data => setLesson(data));
-  }, [id]);
+    axiosSecure.get(`/lessons/${id}`)
+      .then(res => setLesson(res.data))
+      .catch(err => console.error(err));
+  }, [id, axiosSecure]);
 
   if (!lesson) return <p className="text-center mt-10">Loading...</p>;
 
@@ -131,7 +139,7 @@ const LessonDetails = () => {
         {/* 🔹 Stats */}
         <div className="flex gap-6 mb-6 text-gray-600">
           <span className="flex items-center gap-1">
-            <FaHeart /> {lesson.likesCount || 0} Likes
+            <FaHeart /> {lesson?.likesCount || lesson?.likeCount || 0} Likes
           </span>
           <span className="flex items-center gap-1">
             <FaBookmark /> {lesson.favoritesCount || 0} Saves

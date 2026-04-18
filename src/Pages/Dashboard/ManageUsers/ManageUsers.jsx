@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import { FaUserShield } from "react-icons/fa";
 import { FiShieldOff } from "react-icons/fi";
@@ -29,7 +29,7 @@ const ManageUsers = () => {
     const responses = await Promise.all(
       users.map(user =>
         axiosSecure
-          .get(`/lessons/user/${user.email}`)
+          .get(`/users/profile/${user.email}`)
           .then(res => ({ email: user.email, count: res.data.length }))
       )
     );

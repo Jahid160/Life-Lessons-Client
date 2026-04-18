@@ -15,17 +15,18 @@ import { FreeMode, Navigation, Thumbs, Autoplay } from "swiper/modules";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Component/Loading/Loading";
 import useAxios from "../../../Hooks/useAxios";
+import { CloudCog } from "lucide-react";
 
 
 const Banner = () => {
   const axiosInstance = useAxios();
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [thumbsSwiper] = useState(null);
 
-const { data, isLoading, isError, error } = useQuery({
+const { data, isLoading, isError } = useQuery({
   queryKey: ["banner"],
   queryFn: async () => {
     try {
-      const res = await axiosInstance.get("/banner");
+      const res = await axiosInstance.get("/lessons/banner");
       const result = res.data;
 
       // Force it to always be array
@@ -42,7 +43,8 @@ const { data, isLoading, isError, error } = useQuery({
 if (isLoading) return <Loading />;
 if (isError) return <div>Error loading banners</div>;
 
-const banners = Array.isArray(data) ? data : [];
+  const banners = Array.isArray(data) ? data : [];
+  console.log(banners);
 
   return (
     <Swiper

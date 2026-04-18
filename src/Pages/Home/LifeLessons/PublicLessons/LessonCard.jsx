@@ -41,7 +41,7 @@ const LessonCard = () => {
   if (isLoading || userLoading) return <Loading />;
   if (isError) return <div className="text-error text-center py-10">Error loading lessons...</div>;
 
-  const { lessons = [], total = 0, totalPages = 1 } = data || {};
+  const { lessons = [], totalPages = 1 } = data || {};
   const isPremium = userData?.isPremium === false || userData?.isPremium === "false";
 
   const getPageNumbers = () => {
@@ -82,7 +82,6 @@ const LessonCard = () => {
             emotionalTone,
             creatorName,
             createdAt,
-            image,
             accessLevel,
           } = lesson;
 

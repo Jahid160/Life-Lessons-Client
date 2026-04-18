@@ -7,11 +7,12 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import useUserByEmail from "../../../Hooks/useUserByEmail ";
 import Loading from "../../../Component/Loading/Loading";
+import Swal from "sweetalert2";
 
 const UpdateLesson = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-  const { data: lesson = [], isLoading } = useQuery({
+  const { data: lesson = [] } = useQuery({
     queryKey: ["lesson", id],
     queryFn: async () => {
       const result = await axiosSecure.get(`/lessons/${id}`);
@@ -23,10 +24,8 @@ const UpdateLesson = () => {
     title,
     accessLevel,
     category,
-    createdAt,
     description,
     privacy,
-    image,
     emotionalTone,
   } = lesson;
   console.log(title);
@@ -36,7 +35,6 @@ const UpdateLesson = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
   const handleSubmitData = async (data) => {
     const image = data.photo?.[0];
@@ -78,19 +76,30 @@ const UpdateLesson = () => {
 
       console.log("lesson createAt", lesson);
 
-      fetch(`https://life-lesson-server.vercel.app/lessons/${id}`, {
-        method: "PATCH",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(lessonData),
-      })
-        .then((res) => res.json())
-        .then((lessonData) => console.log(lessonData));
+      try {
+        const response = await axiosSecure.patch(`/lessons/${id}`, lessonData);
+        console.log(response.data);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Lesson updated successfully!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        console.error("Error updating lesson:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while updating!",
+        });
+      }
     } catch (error) {
       console.log(error, "image not found");
     }
   };
 
-  const { userData, isLoading: loading, refetch } = useUserByEmail();
+  const { userData, isLoading: loading } = useUserByEmail();
 
   if (loading) return <Loading></Loading>;
   const isPremium = userData?.isPremium;
@@ -193,7 +202,7 @@ const UpdateLesson = () => {
                       : ""
                   }
                 >
-                  {isPremium == true ? (
+                  {isPremium ? (
                     <>
                       <option>Free</option>
                       <option>Premium</option>
@@ -203,7 +212,7 @@ const UpdateLesson = () => {
                   )}
                 </select>
 
-                {!isPremium == "false" && (
+                {!isPremium && (
                   <div
                     className="tooltip tooltip-open absolute left-0 top-0"
                     data-tip="Upgrade to Premium to create paid lessons"

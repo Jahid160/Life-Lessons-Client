@@ -20,7 +20,7 @@ const PaymentSuccess = () => {
   
   useEffect(()=>{
     if (sessionId){
-    axiosSecure.post(`/payment-success`,{
+    axiosSecure.post(`/payments/payment-success`,{
       sessionId,
       email:email
     })

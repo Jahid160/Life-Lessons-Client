@@ -1,19 +1,16 @@
 import React, { useRef, useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import useRole from "../../../Hooks/useRole";
 import { useQuery } from "@tanstack/react-query";
 import { FaEye } from "react-icons/fa";
 
 const ReportedLessons = () => {
-  const role = useRole();
   const modalRef = useRef(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
   console.log(selectedLesson);
   const axiosSecure = useAxiosSecure();
   const {
     data: reportLessons = [],
-    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["reportLessons"],
@@ -70,7 +67,7 @@ const ReportedLessons = () => {
                 <td className="font-medium">{lesson.reportedLessonTitle}</td>
                 <td>
                   <span className="badge badge-error">
-                    {reportLessons.length}
+                    {lesson.reportCount || 1}
                   </span>
                 </td>
                 <td>

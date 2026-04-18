@@ -30,7 +30,7 @@ const AdminDashboardHome = () => {
   const { data: stats, isLoading } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/stats");
+      const res = await axiosSecure.get("/dashboard/admin/stats");
       return res.data;
     },
   });
@@ -39,7 +39,7 @@ const AdminDashboardHome = () => {
   const { data: userGrowth = [] } = useQuery({
     queryKey: ["user-growth"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/growth/users");
+      const res = await axiosSecure.get("/dashboard/admin/growth/users");
       return res.data;
     },
   });
@@ -50,7 +50,7 @@ const AdminDashboardHome = () => {
   const { data: contributors = [] } = useQuery({
     queryKey: ["top-contributors"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/top-contributors");
+      const res = await axiosSecure.get("/dashboard/admin/top-contributors");
       return res.data;
     },
   });

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate, useParams, Link, data } from "react-router";
+import { useNavigate, useParams, Link } from "react-router";
 import {
   FaBookmark,
   FaEye,
@@ -39,14 +39,12 @@ const LessonCardDetails = () => {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [reportReason, setReportReason] = useState("");
-  const [views] = useState(Math.floor(Math.random() * 10000));
+  const [views] = useState(() => Math.floor(Math.random() * 10000));
 
   /* ===================== USER DATA ===================== */
   const { userData, isLoading: userLoading } = useUserByEmail();
 
-  if(userData?.isPremium == false || userData?.isPremium == "false"){
-  navigate('/life-lessons')
-  }
+  // Removed render-phase redirect to allow Premium Lock overlay to function correctly.
 
   /* ===================== LESSON DATA ===================== */
   const {
@@ -61,7 +59,13 @@ const LessonCardDetails = () => {
     },
     enabled: !!id,
   });
-  console.log(lesson?.email);
+
+  React.useEffect(() => {
+    if (lesson && user) {
+      setLiked(lesson.likedBy?.includes(user.uid) || false);
+      setSaved(lesson.savedBy?.includes(user.uid) || false);
+    }
+  }, [lesson, user]);
 
   /* ===================== REPORT MUTATION ===================== */
   const reportMutation = useMutation({
@@ -224,8 +228,8 @@ const saveMutation = useMutation({
         </div>
 
         <div className="flex gap-6 mb-6 text-gray-600">
-          <span><FaHeart className="mr-0.5"/> {lesson?.likesCount }</span>
-          <span><FaBookmark className="mr-0.5"/> {lesson.favoritesCount || 0}</span>
+          <span><FaHeart className="mr-0.5"/> {lesson?.likesCount || lesson?.likeCount || 0}</span>
+          <span><FaBookmark className="mr-0.5"/> {lesson?.favoritesCount || 0}</span>
           <span><FaEye className="mr-0.5"/> {views}</span>
           <Link className="text-yellow-700 text-xl underline" to={`/profile/${lesson.email}`}>View all lessons by this author</Link>
         </div>

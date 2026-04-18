@@ -46,7 +46,7 @@ const AddLesson = () => {
     },
   });
 
-const { userData, isLoading:loading, refetch } = useUserByEmail();
+const { userData, isLoading:loading } = useUserByEmail();
 
   if (loading) return <Loading></Loading>;
 const isPremium = userData?.isPremium

@@ -9,7 +9,7 @@ import Loading from "../Loading/Loading";
 const Navbar = () => {
   const { user, logOut } = useAuth();
   // console.log(user?.photoURL);
-  const { userData, isLoading, refetch } = useUserByEmail();
+  const { userData, isLoading } = useUserByEmail();
 
   if (isLoading) return <Loading></Loading>;
 

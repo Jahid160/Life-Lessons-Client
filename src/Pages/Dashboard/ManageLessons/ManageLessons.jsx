@@ -14,7 +14,7 @@ const ManageLessons = () => {
   const { data: stats, isLoading: LoadingData } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/stats");
+      const res = await axiosSecure.get("/dashboard/admin/stats");
       return res.data;
     },
   });
@@ -26,7 +26,7 @@ const ManageLessons = () => {
   } = useQuery({
     queryKey: ["lesson"],
     queryFn: async () => {
-      const result = await axiosSecure.get(`/lessonsAdmin`, user?.email);
+      const result = await axiosSecure.get("/lessons/admin");
       return result.data;
     },
   });

@@ -26,7 +26,7 @@ const PremiumUpgrade = () => {
   const handleCheckout = async () => {
 
   
-    const res = await axiosSecure.post("/create-checkout-session", {
+    const res = await axiosSecure.post("/payments/create-checkout-session", {
       price: 1500,
     });
 
